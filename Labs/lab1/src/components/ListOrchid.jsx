@@ -3,7 +3,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import Orchid from "./Orchid";
-import { OrchidsData } from "./OrchidData";
+import { OrchidsData } from "../data/OrchidData";
 
 function ListOrchid() {
   return (
