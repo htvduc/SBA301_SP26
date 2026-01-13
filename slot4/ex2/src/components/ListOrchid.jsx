@@ -10,6 +10,7 @@ import { OrchidsData } from "../data/OrchidData";
 function ListOrchid({ searchTerm = "" }) {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [sortOption, setSortOption] = useState("");
+  // `searchTerm` and `onSearchChange` are received from props (lifted to App)
 
   // Lấy danh sách category không trùng
   const categories = useMemo(() => {
