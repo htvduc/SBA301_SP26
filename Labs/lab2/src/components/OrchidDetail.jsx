@@ -23,9 +23,9 @@ function OrchidDetail() {
 
   return (
     <Container className="py-4">
-      <Button variant="link" onClick={() => navigate("/")}>
-        &larr; Back to list
-      </Button>
+      <Button variant="secondary" onClick={() => navigate("/")}>
+          Back to list
+        </Button>
 
       <Card className="mt-3">
         <div style={{ width: "100%", overflow: "hidden" }}>

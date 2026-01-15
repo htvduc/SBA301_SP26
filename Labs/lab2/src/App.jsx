@@ -3,22 +3,21 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import MainLayout from "./components/MainLayout";
+
 import About from "./components/About";
 import Contact from "./components/Contact";
 import ListOrchid from "./components/ListOrchid";
 import Login from "./components/Login";
 import OrchidDetail from "./components/OrchidDetail";
 
-// ✅ PHẢI ĐỂ NGOÀI App
+// Route bảo vệ
 function ProtectedRoute({ isAuthenticated, children }) {
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   return children;
 }
 
 function App() {
-  const [searchTerm, setSearchTerm] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     try {
       return localStorage.getItem("auth") === "true";
@@ -27,50 +26,38 @@ function App() {
     }
   });
 
+  const handleLogout = () => {
+    localStorage.removeItem("auth");
+    setIsAuthenticated(false);
+  };
+
   return (
     <Router>
+      <Routes>
 
-      {/* Ẩn header/footer nếu chưa login */}
-      {isAuthenticated && (
-        <Header
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          onLogout={() => {
-            localStorage.removeItem("auth");
-            setIsAuthenticated(false);
-          }}
-        />
-      )}
-
-
-      <main style={{ minHeight: "70vh" }} className="mt-4">
-        <Routes>
-
-          {/* Login page */}
-          <Route
-            path="/login"
-            element={
-              isAuthenticated ? (
-                <Navigate to="/" replace />
-              ) : (
-                <Login onLogin={() => setIsAuthenticated(true)} />
-              )
-            }
-          />
+        {/* Layout */}
+        <Route
+          element={
+            <MainLayout
+              isAuthenticated={isAuthenticated}
+              onLogout={handleLogout}
+            />
+          }
+        >
 
           {/* Home */}
           <Route
-            path="/"
+            index
             element={
               <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <ListOrchid searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+                <ListOrchid />
               </ProtectedRoute>
             }
           />
 
           {/* About */}
           <Route
-            path="/about"
+            path="about"
             element={
               <ProtectedRoute isAuthenticated={isAuthenticated}>
                 <About />
@@ -80,7 +67,7 @@ function App() {
 
           {/* Contact */}
           <Route
-            path="/contact"
+            path="contact"
             element={
               <ProtectedRoute isAuthenticated={isAuthenticated}>
                 <Contact />
@@ -90,7 +77,7 @@ function App() {
 
           {/* Detail */}
           <Route
-            path="/orchid/:id"
+            path="orchid/:id"
             element={
               <ProtectedRoute isAuthenticated={isAuthenticated}>
                 <OrchidDetail />
@@ -98,20 +85,26 @@ function App() {
             }
           />
 
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
 
-        </Routes>
-      </main>
-
-      {isAuthenticated && (
-        <Footer
-          avatar="/images/avatar.jpg"
-          name="DucHTV"
-          email="hoangtongvietduc@gmail.com"
+        {/* Login */}
+        <Route
+          path="/login"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/" replace />
+            ) : (
+              <Login onLogin={() => setIsAuthenticated(true)} />
+            )
+          }
         />
-      )}
+
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+
+      </Routes>
     </Router>
+
   );
 }
 

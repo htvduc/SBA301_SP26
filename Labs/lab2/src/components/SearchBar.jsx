@@ -2,14 +2,14 @@ import React from "react";
 
 function SearchBar({ value, onChange }) {
   return (
-    <div className="mb-3">
+    <div>
       <input
         type="text"
         className="form-control"
         placeholder="Search by name..."
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        aria-label="Search orchids by name"
+        style={{ height: "38px" }}
       />
     </div>
   );

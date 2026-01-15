@@ -8,16 +8,14 @@ function Orchid({ orchid }) {
   const goToDetail = () => navigate(`/orchid/${orchid.id}`);
 
   return (
-    <Card style={{ width: "100%" }} className="app-card h-auto">
+    <Card className="h-100 shadow-sm">
+      {/* Image */}
       <div style={{ position: "relative" }}>
         <div
           style={{
             width: "100%",
-            height: "250px",
+            height: "220px",
             overflow: "hidden",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
           }}
         >
           <img
@@ -39,8 +37,8 @@ function Orchid({ orchid }) {
               right: "10px",
               background: "red",
               color: "white",
-              padding: "5px 10px",
-              borderRadius: "8px",
+              padding: "4px 8px",
+              borderRadius: "6px",
               fontSize: "12px",
               fontWeight: "bold",
             }}
@@ -50,15 +48,25 @@ function Orchid({ orchid }) {
         )}
       </div>
 
-      <Card.Body>
-        <Card.Title>{orchid.orchidName}</Card.Title>
-        <Card.Text>{orchid.category}</Card.Text>
+      {/* Body */}
+      <Card.Body className="d-flex flex-column">
+        <Card.Title className="fs-6 text-truncate">
+          {orchid.orchidName}
+        </Card.Title>
 
-        <Card.Text style={{ fontSize: "14px" }}>
-          {orchid.description.substring(0, 80)}...
+        <Card.Text className="text-muted mb-1">
+          {orchid.category}
         </Card.Text>
 
-        <p className="fw-bold text-danger">{orchid.price.toLocaleString()} VND</p>
+        <Card.Text style={{ fontSize: "14px" }} className="flex-grow-1">
+          {orchid.description.length > 80
+            ? orchid.description.substring(0, 80) + "..."
+            : orchid.description}
+        </Card.Text>
+
+        <p className="fw-bold text-danger mb-2">
+          {orchid.price.toLocaleString()} VND
+        </p>
 
         <Button variant="primary" onClick={goToDetail}>
           Detail
