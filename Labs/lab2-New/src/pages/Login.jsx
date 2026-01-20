@@ -1,79 +1,15 @@
-import { useReducer, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import loginReducer from  "../stores/loginReducer";
+import useLogin from "../hooks/useLogin";
 import "./Login.css";
 
 function Login({ onLogin }) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [errors, setErrors] = useState({});
-  const [state, dispatch] = useReducer(loginReducer, {
-    isLoading: false,
-    isAuthenticated: false,
-    user: null,
-    error: null,
-  });
-
-  const navigate = useNavigate();
-
-  const validate = () => {
-    const newErrors = {};
-
-    if (!username.trim()) {
-      newErrors.username = "Username không được để trống";
-    }
-
-    if (!password.trim()) {
-      newErrors.password = "Password không được để trống";
-    } else if (password.length < 6) {
-      newErrors.password = "Password phải ít nhất 6 ký tự";
-    }
-
-    setErrors(newErrors);
-
-    // Nếu không có lỗi
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-
-    if (!validate()) return;
-
-    // Dispatch LOGIN_REQUEST action
-    dispatch({ type: "LOGIN_REQUEST" });
-
-    // Simulate API call with setTimeout
-    setTimeout(() => {
-      // ✅ Check tài khoản cứng
-      if (username === "admin" && password === "123456") {
-        localStorage.setItem("auth", "true");
-        const user = { username, role: "admin" };
-        
-        // Dispatch LOGIN_SUCCESS action
-        dispatch({ type: "LOGIN_SUCCESS", payload: user });
-        
-        if (onLogin) onLogin(true);
-        navigate("/", { replace: true });
-      } else {
-        // Dispatch LOGIN_FAILURE action
-        dispatch({
-          type: "LOGIN_FAILURE",
-          payload: "Sai username hoặc password",
-        });
-        setErrors({
-          password: "Sai username hoặc password",
-        });
-      }
-    }, 500);
-  };
-
-  const handleCancel = () => {
-    setUsername("");
-    setPassword("");
-    setErrors({});
-  };
+  const {
+    formState,
+    isLoading,
+    error,
+    handleChange,
+    handleSubmit,
+    handleReset,
+  } = useLogin(onLogin);
 
   return (
     <div className="login-page">
@@ -86,22 +22,35 @@ function Login({ onLogin }) {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleLogin} noValidate className="login-form">
-            {/* Username */}
+          <form onSubmit={handleSubmit} noValidate className="login-form">
+            {/* Error từ AuthContext */}
+            {error && (
+              <div className="alert-error">
+                <strong>Lỗi:</strong> {error}
+              </div>
+            )}
+
+            {/* Identifier */}
             <div className="form-group">
-              <label htmlFor="username" className="form-label">
-                Tên đăng nhập
+              <label htmlFor="identifier" className="form-label">
+                Tên đăng nhập hoặc Email
               </label>
               <input
-                id="username"
+                id="identifier"
                 type="text"
-                className={`form-control ${errors.username ? "error" : ""}`}
-                placeholder="Nhập tên đăng nhập"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                name="identifier"
+                className={`form-control ${
+                  formState.errors.identifier ? "error" : ""
+                }`}
+                placeholder="Nhập tên đăng nhập hoặc email"
+                value={formState.identifier}
+                onChange={handleChange}
+                disabled={isLoading}
               />
-              {errors.username && (
-                <span className="error-text">{errors.username}</span>
+              {formState.errors.identifier && (
+                <span className="error-text">
+                  {formState.errors.identifier}
+                </span>
               )}
             </div>
 
@@ -113,31 +62,44 @@ function Login({ onLogin }) {
               <input
                 id="password"
                 type="password"
-                className={`form-control ${errors.password ? "error" : ""}`}
+                name="password"
+                className={`form-control ${
+                  formState.errors.password ? "error" : ""
+                }`}
                 placeholder="Nhập mật khẩu"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formState.password}
+                onChange={handleChange}
+                disabled={isLoading}
               />
-              {errors.password && (
-                <span className="error-text">{errors.password}</span>
+              {formState.errors.password && (
+                <span className="error-text">
+                  {formState.errors.password}
+                </span>
               )}
             </div>
 
             {/* Demo Info */}
-            {/* <div className="demo-box">
+            <div className="demo-box">
               <strong>Tài khoản demo:</strong>
-              <p>Username: <code>admin</code></p>
-              <p>Password: <code>123456</code></p>
-            </div> */}
+              <p>
+                Admin: <code>admin</code> / <code>123456</code>
+              </p>
+              <p>
+                User: <code>user1</code> / <code>123456</code> (bị từ chối)
+              </p>
+              <p>
+                Locked: <code>user2</code> / <code>123456</code> (bị khóa)
+              </p>
+            </div>
 
             {/* Buttons */}
             <div className="form-actions">
               <button
                 type="submit"
                 className="btn-submit"
-                disabled={state.isLoading}
+                disabled={isLoading}
               >
-                {state.isLoading ? (
+                {isLoading ? (
                   <>
                     <span className="spinner"></span>
                     Đang đăng nhập...
@@ -146,11 +108,12 @@ function Login({ onLogin }) {
                   "Đăng nhập"
                 )}
               </button>
+
               <button
                 type="button"
                 className="btn-cancel"
-                onClick={handleCancel}
-                disabled={state.isLoading}
+                onClick={handleReset}
+                disabled={isLoading}
               >
                 Hủy
               </button>

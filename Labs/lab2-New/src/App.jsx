@@ -1,8 +1,8 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { useState } from "react";
 
+import { AuthProvider } from "./stores/AuthContext";
 import MainLayout from "./components/MainLayout";
 
 import About from "./components/About";
@@ -12,99 +12,46 @@ import Login from "./pages/Login";
 import OrchidDetail from "./components/OrchidDetail";
 
 // Route bảo vệ
-function ProtectedRoute({ isAuthenticated, children }) {
+function ProtectedRoute({ children }) {
+  const isAuthenticated = localStorage.getItem("auth") === "true";
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   return children;
 }
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    try {
-      return localStorage.getItem("auth") === "true";
-    } catch {
-      return false;
-    }
-  });
-
-  const handleLogout = () => {
-    localStorage.removeItem("auth");
-    setIsAuthenticated(false);
-  };
-
   return (
-    <Router>
-      <Routes>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Login */}
+          <Route path="/login" element={<Login />} />
 
-        {/* Layout */}
-        <Route
-          element={
-            <MainLayout
-              isAuthenticated={isAuthenticated}
-              onLogout={handleLogout}
-            />
-          }
-        >
-
-          {/* Home */}
+          {/* Layout với các route con bảo vệ */}
           <Route
-            index
             element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <ListOrchid />
+              <ProtectedRoute>
+                <MainLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            {/* Home */}
+            <Route index element={<ListOrchid />} />
 
-          {/* About */}
-          <Route
-            path="about"
-            element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <About />
-              </ProtectedRoute>
-            }
-          />
+            {/* About */}
+            <Route path="about" element={<About />} />
 
-          {/* Contact */}
-          <Route
-            path="contact"
-            element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <Contact />
-              </ProtectedRoute>
-            }
-          />
+            {/* Contact */}
+            <Route path="contact" element={<Contact />} />
 
-          {/* Detail */}
-          <Route
-            path="orchid/:id"
-            element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <OrchidDetail />
-              </ProtectedRoute>
-            }
-          />
+            {/* Detail */}
+            <Route path="orchid/:id" element={<OrchidDetail />} />
+          </Route>
 
-        </Route>
-
-        {/* Login */}
-        <Route
-          path="/login"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/" replace />
-            ) : (
-              <Login onLogin={() => setIsAuthenticated(true)} />
-            )
-          }
-        />
-
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-
-      </Routes>
-    </Router>
-
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
