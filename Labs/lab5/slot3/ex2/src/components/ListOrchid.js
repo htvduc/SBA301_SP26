@@ -1,0 +1,74 @@
+export const OrchidsData = [
+  {
+    id: "1",
+    orchidName: "Ceasar 4N",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porta lobortis ex.",
+    category: "Dendrobium",
+    isSpecial: true,
+    image: "/images/1.jpg",
+  },
+  {
+    id: "2",
+    orchidName: "Mini Yaya",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porta lobortis ex.",
+    category: "Dendrobium",
+    isSpecial: true,
+    image: "/images/2.jpg",
+  },
+  {
+    id: "3",
+    orchidName: "Crystallinum",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porta lobortis ex.",
+    category: "Dendrobium",
+    isSpecial: true,
+    image: "/images/3.jpg",
+  },
+  {
+    id: "4",
+    orchidName: "Damari",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porta lobortis ex.",
+    category: "Dendrobium",
+    isSpecial: false,
+    image: "/images/4.jpg",
+  },
+  {
+    id: "5",
+    orchidName: "Busuangense",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porta lobortis ex.",
+    category: "Dendrobium",
+    isSpecial: true,
+    image: "/images/5.jpg",
+  },
+  {
+    id: "6",
+    orchidName: "Pink Moth",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porta lobortis ex.",
+    category: "Oncidium",
+    isSpecial: true,
+    image: "/images/6.jpg",
+  },
+  {
+    id: "7",
+    orchidName: "Alba",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porta lobortis ex.",
+    category: "Dendrobium",
+    isSpecial: true,
+    image: "/images/7.jpg",
+  },
+  {
+    id: "8",
+    orchidName: "Singapore yellow",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porta lobortis ex.",
+    category: "Dendrobium",
+    isSpecial: true,
+    image: "/images/8.jpg",
+  },
+];

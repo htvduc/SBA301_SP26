@@ -1,0 +1,60 @@
+import { useState } from "react";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+import ConfirmModal from "./ConfirmModal";
+
+function Orchid({ orchid }) {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  return (
+    <>
+      <Card style={{ height: "100%" }}>
+        <div style={{ position: "relative" }}>
+          <Card.Img
+            variant="top"
+            src={orchid.image}
+            style={{ height: "250px", objectFit: "cover" }}
+          />
+
+          {orchid.isSpecial && (
+            <span
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                background: "red",
+                color: "white",
+                padding: "5px 10px",
+                borderRadius: "8px",
+                fontSize: "12px",
+                fontWeight: "bold",
+              }}
+            >
+              Special
+            </span>
+          )}
+        </div>
+
+        <Card.Body>
+          <Card.Title>{orchid.orchidName}</Card.Title>
+          <Card.Text>{orchid.category}</Card.Text>
+
+          <Card.Text style={{ fontSize: "14px" }}>
+            {orchid.description.substring(0, 80)}...
+          </Card.Text>
+
+          <Button variant="primary" onClick={handleShow}>
+            Detail
+          </Button>
+        </Card.Body>
+      </Card>
+
+      <ConfirmModal show={show} handleClose={handleClose} orchid={orchid} />
+    </>
+  );
+}
+
+export default Orchid;
