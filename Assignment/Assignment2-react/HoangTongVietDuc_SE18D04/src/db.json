@@ -1,0 +1,64 @@
+{
+  "systemAccounts": [
+    { "accountID": 1, "accountName": "Admin", "accountEmail": "admin@fun.edu.vn", "accountRole": 1, "accountPassword": "Admin" },
+    { "accountID": 2, "accountName": "Staff", "accountEmail": "staff1@fun.edu.vn", "accountRole": 2, "accountPassword": "Staff" }
+  ],
+  "categories": [
+    { "categoryID": 1, "categoryName": "Tin tức khuôn viên", "categoryDescription": "Các cập nhật mới nhất về hoạt động trong khuôn viên trường.", "parentCategoryID": null, "isActive": true },
+    { "categoryID": 2, "categoryName": "Học thuật", "categoryDescription": "Thông tin về các khóa học và chương trình đào tạo.", "parentCategoryID": null, "isActive": true },
+    { "categoryID": 3, "categoryName": "Sự kiện", "categoryDescription": "Các sự kiện sắp tới của trường đại học.", "parentCategoryID": null, "isActive": true },
+    { "categoryID": 4, "categoryName": "Thể thao", "categoryDescription": "Tin tức và kết quả thể thao.", "parentCategoryID": 3, "isActive": true }
+  ],
+  "newsArticles": [
+    {
+      "newsArticleID": 1,
+      "newsTitle": "Chào mừng Tân sinh viên!",
+      "headline": "Chương trình định hướng cho sinh viên mới.",
+      "createdDate": "2023-09-01T10:00:00Z",
+      "newsContent": "Trường đại học chào đón tất cả các tân sinh viên với chương trình định hướng thú vị...",
+      "newsSource": "FUNews",
+      "categoryID": 1,
+      "newsStatus": 1,
+      "createdByID": 1,
+      "updatedByID": null,
+      "modifiedDate": null
+    },
+    {
+      "newsArticleID": 2,
+      "newsTitle": "Trao tặng khoản tài trợ nghiên cứu mới",
+      "headline": "GS. Jane Doe nhận được khoản tài trợ lớn.",
+      "createdDate": "2023-10-15T14:30:00Z",
+      "newsContent": "Giáo sư Jane Doe từ Khoa Khoa học Máy tính đã được trao tặng một khoản tài trợ nghiên cứu danh giá...",
+      "newsSource": "FUNews",
+      "categoryID": 2,
+      "newsStatus": 1,
+      "createdByID": 2,
+      "updatedByID": null,
+      "modifiedDate": null
+    },
+    {
+      "newsArticleID": 3,
+      "newsTitle": "Bữa tiệc Gala hàng năm",
+      "headline": "Vé đã có sẵn cho bữa tiệc gala hàng năm.",
+      "createdDate": "2023-11-01T09:00:00Z",
+      "newsContent": "Tham gia cùng chúng tôi trong bữa tiệc gala hàng năm để kỷ niệm những thành tựu của trường đại học...",
+      "newsSource": "Đội ngũ Sự kiện",
+      "categoryID": 3,
+      "newsStatus": 0,
+      "createdByID": 1,
+      "updatedByID": null,
+      "modifiedDate": null
+    }
+  ],
+  "tags": [
+    { "tagID": 1, "tagName": "Định hướng", "note": "Sự kiện cho sinh viên mới" },
+    { "tagID": 2, "tagName": "Nghiên cứu", "note": "Tập trung nghiên cứu học thuật" },
+    { "tagID": 3, "tagName": "Gala", "note": "Sự kiện xã hội hàng năm" },
+    { "tagID": 4, "tagName": "Thể thao", "note": "Thể thao đại học" }
+  ],
+  "newsTags": [
+    { "newsArticleID": 1, "tagID": 1 },
+    { "newsArticleID": 2, "tagID": 2 },
+    { "newsArticleID": 3, "tagID": 3 }
+  ]
+}
