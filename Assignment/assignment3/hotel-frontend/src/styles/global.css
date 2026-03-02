@@ -1,0 +1,223 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #f3f4f6;
+  color: #111827;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: #111827;
+  color: #f9fafb;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.nav-link {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+}
+
+.nav-link.active {
+  background: #374151;
+}
+
+.btn {
+  border-radius: 0.5rem;
+  border: none;
+  padding: 0.5rem 1rem;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn.secondary {
+  background: #6b7280;
+}
+
+.btn.danger {
+  background: #dc2626;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.card {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.1),
+    0 4px 6px -2px rgba(15, 23, 42, 0.05);
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.form {
+  display: grid;
+  gap: 1rem;
+  max-width: 420px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.form-label {
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.form-input {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  font-size: 0.95rem;
+}
+
+.form-input:focus {
+  outline: 2px solid #2563eb;
+  border-color: transparent;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.table th,
+.table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table th {
+  text-align: left;
+  background: #f9fafb;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+}
+
+.badge.green {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.badge.red {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.badge.gray {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.badge.orange {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.badge.purple {
+  background: #f3e8ff;
+  color: #6b21a8;
+}
+
+.page-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Inline validation */
+.field-error {
+  color: #dc2626;
+  font-size: 0.8rem;
+  margin-top: 0.15rem;
+}
+
+.form-input.error {
+  border-color: #dc2626;
+}
+
+.form-message {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.form-message.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.form-message.error {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Clickable card */
+.card.clickable {
+  cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.card.clickable:hover {
+  box-shadow: 0 14px 20px -4px rgba(15,23,42,0.15);
+  transform: translateY(-2px);
+}
