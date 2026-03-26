@@ -1,0 +1,23 @@
+@startuml Order Item Lifecycle - State Diagram
+title Order Item Lifecycle (EntityStatus on OrderItem)
+
+skinparam state {
+  BackgroundColor White
+  BorderColor #333333
+}
+
+state "ON_ORDER" as ON_ORDER
+state "VOIDED" as VOIDED
+
+[*] --> ON_ORDER : addLineItem
+
+ON_ORDER --> VOIDED : voidLineItem
+
+VOIDED --> [*]
+
+note bottom
+  **addLineItem** = thêm món vào order (status ACTIVE)
+  **voidLineItem** = gỡ món khỏi order (status DELETED, soft delete)
+end note
+
+@enduml

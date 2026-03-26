@@ -1,0 +1,38 @@
+@startuml Order Flow - Component Communication
+title Order: Controller – Service – Repository (communication)
+
+skinparam componentStyle rectangle
+
+package "API" {
+  [WaiterOrderController] as Controller
+}
+
+package "Service" {
+  [OrderService] as OrderSvc
+}
+
+package "Persistence" {
+  [OrderRepository] as OrderRepo
+  [OrderLineRepository] as LineRepo
+  [OrderItemRepository] as ItemRepo
+  [AreaTableRepository] as TableRepo
+  [MenuItemRepository] as MenuItemRepo
+}
+
+actor "Waiter" as Waiter
+
+Waiter --> Controller : createOrder\naddItemsToOrder\ncancelOrder
+Controller --> OrderSvc : createOrder(request)\naddItemsToOrder(id, request)\ncancelOrder(id)
+OrderSvc --> TableRepo : findById\nsave (table status)
+OrderSvc --> OrderRepo : findById\nfindByTableAndStatus\nsave
+OrderSvc --> LineRepo : save(OrderLine)
+OrderSvc --> ItemRepo : save(OrderItem)
+OrderSvc --> MenuItemRepo : findById
+
+note right of OrderSvc
+  Order line: PENDING (create).
+  Order status: EATING → COMPLETED / CANCELLED
+  (payment qua BillService).
+end note
+
+@enduml

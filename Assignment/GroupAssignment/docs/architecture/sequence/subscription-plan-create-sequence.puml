@@ -1,0 +1,44 @@
+@startuml Admin Create Subscription Plan - Sequence Diagram
+
+actor "Admin" as Admin
+participant "PackageController" as Controller
+participant "PackageService" as Service
+participant "PackageRepository" as PackageRepo
+database "Database" as DB
+
+== Create Subscription Plan Request ==
+Admin -> Controller : POST /api/packages\n(PackageFeatureDTO:\nname, description, price, billingPeriod, features)
+activate Controller
+
+Controller -> Service : createPackageWithFeatures(dto)
+activate Service
+
+Service -> PackageRepo : existsByName(name)
+activate PackageRepo
+PackageRepo -> DB : SELECT by name
+DB --> PackageRepo : boolean
+PackageRepo --> Service : exists
+deactivate PackageRepo
+
+alt package name already exists
+    Service --> Controller : throw AppException(PACKAGE_NAME_EXISTED)
+    Controller --> Admin : 4xx ApiResponse (error)
+else success
+    Service -> PackageRepo : save(package)
+    activate PackageRepo
+    PackageRepo -> DB : INSERT package
+    DB --> PackageRepo : Package
+    PackageRepo --> Service : Package
+    deactivate PackageRepo
+
+    Service -> Service : add features, build PackageFeatureDTO
+    Service --> Controller : PackageFeatureDTO
+    deactivate Service
+
+    Controller -> Controller : ApiResponse.setResult(packageFeatureDTO)
+
+    Controller --> Admin : 200 ApiResponse<PackageFeatureDTO>
+    deactivate Controller
+end
+
+@enduml

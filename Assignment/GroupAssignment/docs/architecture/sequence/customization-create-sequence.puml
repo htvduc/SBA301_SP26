@@ -1,0 +1,58 @@
+@startuml Create Customization - Sequence Diagram
+
+actor "Restaurant Owner" as Owner
+participant "CustomizationController" as Controller
+participant "CustomizationService" as Service
+participant "RestaurantRepository" as RestaurantRepo
+participant "CategoryRepository" as CategoryRepo
+participant "CustomizationRepository" as CustomizationRepo
+participant "CustomizationMapper" as Mapper
+database "Database" as DB
+
+== Create Customization Request ==
+Owner -> Controller : POST /api/customizations\n(CustomizationCreateRequest:\nrestaurantId, name, price, categoryId, menuItemId)
+activate Controller
+
+Controller -> Service : create(request)
+activate Service
+
+Service -> RestaurantRepo : findById(restaurantId)
+activate RestaurantRepo
+RestaurantRepo -> DB : SELECT restaurant by id
+DB --> RestaurantRepo : Optional<Restaurant>
+RestaurantRepo --> Service : Optional<Restaurant>
+deactivate RestaurantRepo
+
+Service -> CategoryRepo : findById(categoryId)
+activate CategoryRepo
+CategoryRepo -> DB : SELECT category by id
+DB --> CategoryRepo : Optional<Category>
+CategoryRepo --> Service : Optional<Category>
+deactivate CategoryRepo
+
+alt restaurant not found\nor category not found\nor menu item not found\nor limit exceeded
+    Service --> Controller : throw AppException
+    Controller --> Owner : 4xx ApiResponse (error)
+else success
+    Service -> CustomizationRepo : save(customization)
+    activate CustomizationRepo
+    CustomizationRepo -> DB : INSERT customization
+    DB --> CustomizationRepo : Customization
+    CustomizationRepo --> Service : Customization
+    deactivate CustomizationRepo
+
+    Service -> Mapper : toCustomizationDTO(saved)
+    activate Mapper
+    Mapper --> Service : CustomizationDTO
+    deactivate Mapper
+
+    Service --> Controller : CustomizationDTO
+    deactivate Service
+
+    Controller -> Controller : ApiResponse.setResult(customizationDTO)
+
+    Controller --> Owner : 200 ApiResponse<CustomizationDTO>
+    deactivate Controller
+end
+
+@enduml

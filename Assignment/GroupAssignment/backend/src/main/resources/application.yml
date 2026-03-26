@@ -1,0 +1,102 @@
+server:
+  port: 8080
+  forward-headers-strategy: framework
+
+spring:
+  application:
+    name: restaurant-management
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-test-query: SELECT 1
+
+  liquibase:
+    enabled: false
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+      timeout: 6000
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - openid
+              - email
+              - profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
+
+jwt:
+  access-token:
+    expiration: 3600 # 1 hour in seconds
+  refresh-token:
+    expiration: 604800 # 7 days in seconds
+  secret-key: ${JWT_SECRET_KEY}
+
+frontend: 
+  base-url: ${FRONTEND_BASE_URL}
+
+cloudinary:
+  cloud_name: ${CLOUD_NAME}
+  api_key: ${CLOUD_API_KEY}
+  api_secret: ${CLOUD_API_SECRET}
+
+management:
+  server:
+    port: 8080
+
+  endpoints:
+    web:
+      exposure:
+        include: health
+
+  endpoint:
+    health:
+      show-details: always
+
+brevo:
+  api_key: ${BREVO_API_KEY}
+  mail_base_url: ${BREVO_MAIL_URL}
+  sender_email: noreply@bentox.store
+  sender_name: BentoX
+
+payos:
+  client-id: ${PAYOS_CLIENT_ID}
+  api-key: ${PAYOS_API_KEY}
+  checksum-key: ${PAYOS_CHECKSUM_KEY}
+  base-url: https://api-merchant.payos.vn
+  # test first, will put this in env
+  return-url: https://bentox.store/payment/success
+  cancel-url: https://bentox.store/payment/cancel
+
+ai:
+  vector:
+    top-k: 5
+    similarity-threshold: 0.7
+    max-context-tokens: 3000
+    embedding-model: amazon.titan-embed-text-v2:0
+    retry:
+      max-attempts: 3
+      backoff-ms: 1000

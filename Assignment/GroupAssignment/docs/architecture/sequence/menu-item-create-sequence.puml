@@ -1,0 +1,58 @@
+@startuml Create Menu Item - Sequence Diagram
+
+actor "Restaurant Owner" as Owner
+participant "MenuItemController" as Controller
+participant "MenuItemService" as Service
+participant "RestaurantRepository" as RestaurantRepo
+participant "CategoryRepository" as CategoryRepo
+participant "MenuItemRepository" as MenuItemRepo
+participant "MenuItemMapper" as Mapper
+database "Database" as DB
+
+== Create Menu Item Request ==
+Owner -> Controller : POST /api/menu-items/create\n(MenuItemCreateRequest, imageFile:\nrestaurantId, categoryId, name, price, ...)
+activate Controller
+
+Controller -> Service : create(request, imageFile)
+activate Service
+
+Service -> RestaurantRepo : findById(restaurantId)
+activate RestaurantRepo
+RestaurantRepo -> DB : SELECT restaurant by id
+DB --> RestaurantRepo : Optional<Restaurant>
+RestaurantRepo --> Service : Optional<Restaurant>
+deactivate RestaurantRepo
+
+Service -> CategoryRepo : findById(categoryId)
+activate CategoryRepo
+CategoryRepo -> DB : SELECT category by id
+DB --> CategoryRepo : Optional<Category>
+CategoryRepo --> Service : Optional<Category>
+deactivate CategoryRepo
+
+alt restaurant not found\nor category not found\nor limit exceeded\nor customization not found
+    Service --> Controller : throw AppException
+    Controller --> Owner : 4xx ApiResponse (error)
+else success
+    Service -> MenuItemRepo : save(menuItem)
+    activate MenuItemRepo
+    MenuItemRepo -> DB : INSERT menu_item
+    DB --> MenuItemRepo : MenuItem
+    MenuItemRepo --> Service : MenuItem
+    deactivate MenuItemRepo
+
+    Service -> Mapper : toMenuItemDTO(saved)
+    activate Mapper
+    Mapper --> Service : MenuItemDTO
+    deactivate Mapper
+
+    Service --> Controller : MenuItemDTO
+    deactivate Service
+
+    Controller -> Controller : ApiResponse.setResult(menuItemDTO)
+
+    Controller --> Owner : 200 ApiResponse<MenuItemDTO>
+    deactivate Controller
+end
+
+@enduml

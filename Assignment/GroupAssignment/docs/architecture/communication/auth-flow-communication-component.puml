@@ -1,0 +1,34 @@
+@startuml Auth Flow - Component Communication
+title Auth: Controller – Service – Repositories (communication)
+
+skinparam componentStyle rectangle
+
+package "API" {
+  [AuthenticationController] as Controller
+}
+
+package "Service" {
+  [AuthenticationService] as AuthService
+}
+
+package "Persistence / External" {
+  [UserRepository] as UserRepo
+  [RoleRepository] as RoleRepo
+  [RefreshTokenRepository] as RefreshRepo
+}
+package "Support" {
+  [JwtService] as Jwt
+  [PasswordEncoder] as Encoder
+}
+
+actor "Client" as Client
+
+Client --> Controller : login\nregister\nlogout\nforgotPassword
+Controller --> AuthService : login(...)\nregister(...)\nlogout(...)\nforgotPassword(...)
+AuthService --> UserRepo : findByEmail\nsave
+AuthService --> RoleRepo : findByName
+AuthService --> RefreshRepo : save\ndelete
+AuthService --> Encoder : encode\nmatches
+AuthService --> Jwt : generateToken\nvalidateToken
+
+@enduml

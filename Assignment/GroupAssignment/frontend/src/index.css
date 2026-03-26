@@ -1,0 +1,323 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 20% 97%;
+    --foreground: 230 25% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 230 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 230 25% 15%;
+
+    --primary: 230 80% 56%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 230 30% 18%;
+    --secondary-foreground: 220 20% 95%;
+
+    --muted: 220 15% 94%;
+    --muted-foreground: 220 10% 46%;
+
+    --accent: 172 66% 50%;
+    --accent-foreground: 230 30% 12%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 225 15% 91%;
+    --input: 225 15% 91%;
+    --ring: 230 80% 56%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 232 32% 12%;
+    --sidebar-foreground: 220 20% 92%;
+    --sidebar-primary: 230 80% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 232 28% 18%;
+    --sidebar-accent-foreground: 220 20% 92%;
+    --sidebar-border: 232 24% 20%;
+    --sidebar-ring: 230 80% 60%;
+
+    /* Rich multi-tone palette */
+    --indigo-deep: 232 35% 12%;
+    --indigo-mid: 232 28% 18%;
+    --indigo-soft: 232 22% 24%;
+    --violet: 258 65% 58%;
+    --teal: 172 66% 50%;
+    --teal-soft: 172 45% 90%;
+    --rose: 340 65% 58%;
+    --amber: 38 92% 60%;
+    --sky: 200 85% 58%;
+  }
+
+  .dark {
+    --background: 232 35% 7%;
+    --foreground: 220 20% 95%;
+
+    --card: 232 30% 11%;
+    --card-foreground: 220 20% 95%;
+
+    --popover: 232 30% 11%;
+    --popover-foreground: 220 20% 95%;
+
+    --primary: 230 80% 62%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 232 22% 16%;
+    --secondary-foreground: 220 20% 95%;
+
+    --muted: 232 22% 16%;
+    --muted-foreground: 220 10% 55%;
+
+    --accent: 172 66% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 232 22% 18%;
+    --input: 232 22% 18%;
+    --ring: 230 80% 62%;
+
+    --sidebar-background: 232 35% 6%;
+    --sidebar-foreground: 220 20% 92%;
+    --sidebar-primary: 230 80% 62%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 232 28% 12%;
+    --sidebar-accent-foreground: 220 20% 92%;
+    --sidebar-border: 232 24% 14%;
+    --sidebar-ring: 230 80% 62%;
+
+    --indigo-deep: 232 35% 12%;
+    --indigo-mid: 232 28% 18%;
+    --indigo-soft: 232 22% 24%;
+    --violet: 258 65% 62%;
+    --teal: 172 66% 55%;
+    --teal-soft: 172 30% 15%;
+    --rose: 340 65% 62%;
+    --amber: 38 92% 62%;
+    --sky: 200 85% 62%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+  }
+  .material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.floorplan-grid {
+  background-image: radial-gradient(circle, #3d2126 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+.luxury-border {
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.luxury-border:focus-within {
+  border-color: #d4af37;
+}
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-card border border-border/80 shadow-sm;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .glass-card:hover {
+    box-shadow: 0 8px 30px -8px hsl(var(--primary) / 0.1), 0 2px 8px -2px rgba(0,0,0,0.06);
+  }
+
+  .hero-bg {
+    background: linear-gradient(145deg, hsl(var(--indigo-deep)) 0%, hsl(var(--indigo-mid)) 50%, hsl(var(--indigo-soft)) 100%);
+  }
+
+  .brand-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--violet)));
+  }
+
+  .text-gradient-hero {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--violet)) 40%, hsl(var(--teal)) 100%);
+  }
+
+  .text-gradient-accent {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--teal)), hsl(var(--sky)));
+  }
+
+  .badge-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.12), hsl(var(--violet) / 0.12));
+    border: 1px solid hsl(var(--primary) / 0.15);
+  }
+
+  .cta-gradient {
+    background: linear-gradient(145deg, hsl(var(--indigo-deep)), hsl(var(--indigo-mid)) 60%, hsl(var(--indigo-soft)));
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-gradient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 20%, hsl(var(--violet) / 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, hsl(var(--teal) / 0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .pricing-popular {
+    background: linear-gradient(155deg, hsl(var(--indigo-deep)), hsl(var(--indigo-mid)) 70%);
+    position: relative;
+    overflow: hidden;
+  }
+  .pricing-popular::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 80% 10%, hsl(var(--violet) / 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 20% 90%, hsl(var(--teal) / 0.12) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .feature-icon-blue {
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.1), hsl(var(--violet) / 0.08));
+    border: 1px solid hsl(var(--primary) / 0.1);
+  }
+
+  .feature-icon-teal {
+    background: linear-gradient(135deg, hsl(var(--teal) / 0.1), hsl(var(--sky) / 0.08));
+    border: 1px solid hsl(var(--teal) / 0.1);
+  }
+
+  .feature-icon-violet {
+    background: linear-gradient(135deg, hsl(var(--violet) / 0.1), hsl(var(--rose) / 0.06));
+    border: 1px solid hsl(var(--violet) / 0.1);
+  }
+
+  .stat-glow {
+    text-shadow: 0 0 40px hsl(var(--primary) / 0.3);
+  }
+
+  .glow-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(80px);
+    pointer-events: none;
+  }
+  .btn-primary {
+    @apply bg-primary text-white px-6 py-2 rounded-lg font-bold text-sm transition-all hover:bg-primary/90 shadow-lg shadow-primary/20;
+  }
+
+  .btn-primary-lg {
+    @apply bg-primary text-white py-4 rounded-xl font-bold text-lg transition-all hover:bg-primary/90 shadow-lg shadow-primary/20;
+  }
+
+  .section-heading {
+    @apply text-4xl md:text-5xl font-bold dark:text-white leading-tight;
+  }
+
+  .section-subheading {
+    @apply text-primary font-bold tracking-widest text-sm uppercase mb-3;
+  }
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Customer Pages Theme - Restaurant Red Style */
+.customer-theme {
+  /* Main colors */
+  --primary-customer: 349 80% 45%;   /* #cf1736 */
+  --accent-gold: 45 65% 52%;         /* #d4af37 */
+
+  /* Backgrounds */
+  --background-light: 0 12% 97%;     /* #f8f6f6 */
+  --background-dark: 349 32% 10%;    /* #211114 */
+
+  /* Surfaces */
+  --surface-dark: 349 30% 14%;       /* #2d181c */
+  --border-dark: 350 33% 21%;        /* #47242a */
+
+  /* Default background for customer */
+  --background: 0 12% 97%;
+}
+
+.customer-theme button,
+.customer-theme a,
+.customer-theme [role="button"] {
+  --color-override: 1;
+}
+
+/* Override primary color for customer pages */
+.customer-theme {
+  --primary: 349 80% 45%;
+}
+
+/* Dark mode */
+.customer-theme.dark {
+  --primary: 349 80% 45%;
+  --primary-foreground: 0 0% 100%;
+
+  --background: 349 32% 10%;
+  --foreground: 220 20% 95%;
+
+  --card: 349 30% 14%;
+  --card-foreground: 220 20% 95%;
+
+  --border: 350 33% 21%;
+  --input: 350 33% 21%;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}

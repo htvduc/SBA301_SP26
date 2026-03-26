@@ -1,0 +1,101 @@
+@startuml Payment / Billing Module - Class Diagram
+
+top to bottom direction
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam defaultFontSize 11
+skinparam classFontSize 12
+skinparam classFontStyle bold
+skinparam arrowColor #555555
+
+title Payment / Billing Module — Class Diagram
+
+' ============================================================
+' CONTROLLERS (top)
+' ============================================================
+class BillingController {
+  + getBillById(id : UUID) : BillDTO
+  + createBill(request) : BillDTO
+  + updateBill(id : UUID, dto : BillDTO) : BillDTO
+  + getBillsByBranch(branchId : UUID) : List<BillDTO>
+}
+
+class PaymentController {
+  + createPayment(request) : PaymentDTO
+  + confirmPayment(paymentId : UUID) : PaymentDTO
+  + getPaymentsByBill(billId : UUID) : List<PaymentDTO>
+}
+
+' ============================================================
+' DTOs (middle)
+' ============================================================
+class BillDTO {
+  - billId : UUID
+  - branchId : UUID
+  - tableId : UUID
+  - totalAmount : BigDecimal
+  - status : BillStatus
+  - createdAt : Instant
+}
+
+class PaymentDTO {
+  - paymentId : UUID
+  - billId : UUID
+  - method : PaymentMethod
+  - amount : BigDecimal
+  - status : PaymentStatus
+  - createdAt : Instant
+}
+
+' ============================================================
+' DOMAIN MODELS (bottom)
+' ============================================================
+class Bill {
+  - billId : UUID
+  - totalAmount : BigDecimal
+  - status : BillStatus
+  - branch : Branch
+  - payments : Set<Payment>
+}
+
+class Payment {
+  - paymentId : UUID
+  - method : PaymentMethod
+  - amount : BigDecimal
+  - status : PaymentStatus
+  - bill : Bill
+}
+
+class Branch {
+  - branchId : UUID
+  - address : String
+  - bills : Set<Bill>
+}
+
+enum BillStatus <<enum>>
+enum PaymentStatus <<enum>>
+enum PaymentMethod <<enum>>
+
+' ============================================================
+' Controller dependencies → DTOs
+' ============================================================
+BillingController ..> BillDTO
+PaymentController ..> PaymentDTO
+
+' ============================================================
+' DTO dependencies → Domain Models
+' ============================================================
+BillDTO ..> Bill
+PaymentDTO ..> Payment
+
+' ============================================================
+' Model associations with multiplicity
+' ============================================================
+Branch "1" --> "*" Bill
+Bill "1" --> "*" Payment
+Bill --> BillStatus
+Payment --> PaymentMethod
+Payment --> PaymentStatus
+
+@enduml

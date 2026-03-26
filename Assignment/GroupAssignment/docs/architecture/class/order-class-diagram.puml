@@ -1,0 +1,170 @@
+@startuml Order Module - Class Diagram
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam defaultFontSize 11
+skinparam classFontSize 12
+skinparam classFontStyle bold
+skinparam arrowColor #555555
+
+title Order Module — Class Diagram
+
+' ============================================================
+' CONTROLLER (top)
+' ============================================================
+class OrderController {
+  + createOrder(CreateOrderRequest) : OrderResponse
+  + updateOrder(UpdateOrderRequest) : OrderResponse
+  + addItem(orderId, AddOrderItemRequest) : OrderResponse
+  + removeItem(orderItemId : UUID) : void
+  + getOrder(orderId) : OrderResponse
+  + cancelOrder(orderId) : OrderResponse
+}
+
+' ============================================================
+' REQUEST DTOs (middle-left)
+' ============================================================
+class CreateOrderRequest {
+  - areaTableId : UUID
+  - items : List<CreateOrderItemRequest>
+}
+
+class CreateOrderItemRequest {
+  - menuItemId : UUID
+  - quantity : int
+  - note : String
+}
+
+class UpdateOrderRequest {
+  - orderId : UUID
+  - status : OrderStatus
+}
+
+class AddOrderItemRequest {
+  - items : List<CreateOrderItemRequest>
+}
+
+' ============================================================
+' RESPONSE DTOs (middle-right)
+' ============================================================
+class OrderResponse {
+  - orderId : UUID
+  - userId : UUID
+  - areaTableId : UUID
+  - status : OrderStatus
+  - totalPrice : BigDecimal
+  - orderItems : List<OrderItemResponse>
+}
+
+class OrderItemResponse {
+  - orderItemId : UUID
+  - menuItemId : UUID
+  - quantity : int
+  - totalPrice : BigDecimal
+  - note : String
+}
+
+' ============================================================
+' DOMAIN MODELS (bottom)
+' ============================================================
+class Order {
+  - orderId : UUID
+  - status : OrderStatus
+  - totalPrice : BigDecimal
+  - createdAt : Instant
+  - areaTable : AreaTable
+  - orderItems : Set<OrderItem>
+}
+
+class OrderItem {
+  - orderItemId : UUID
+  - quantity : int
+  - totalPrice : BigDecimal
+  - note : String
+  - menuItem : MenuItem
+}
+
+class MenuItem {
+  - menuItemId : UUID
+  - name : String
+  - price : BigDecimal
+}
+
+class AreaTable {
+  - areaTableId : UUID
+  - tableName : String
+  - status : TableStatus
+}
+
+class Bill {
+  - billId : UUID
+  - finalPrice : BigDecimal
+  - paymentMethod : PaymentMethod
+  - paidTime : LocalDateTime
+}
+
+class Payment {
+  - paymentId : UUID
+  - paymentMethod : PaymentMethod
+  - paidAt : Instant
+}
+
+class User {
+  - userId : UUID
+  - email : String
+  - username : String
+}
+
+enum PaymentMethod <<enum>> {
+  CASH
+  CARD
+  QR
+  BANK_TRANSFER
+}
+
+' ============================================================
+' Controller dependencies → Request DTOs
+' ============================================================
+OrderController ..> CreateOrderRequest
+OrderController ..> UpdateOrderRequest
+OrderController ..> AddOrderItemRequest
+
+' ============================================================
+' Controller dependencies → Response DTOs
+' ============================================================
+OrderController ..> OrderResponse
+
+' ============================================================
+' Request DTO composition
+' ============================================================
+CreateOrderRequest --> CreateOrderItemRequest
+AddOrderItemRequest --> CreateOrderItemRequest
+
+' ============================================================
+' Response composition
+' ============================================================
+OrderResponse --> OrderItemResponse
+
+' ============================================================
+' Response → Model dependencies
+' ============================================================
+OrderResponse ..> Order
+OrderItemResponse ..> OrderItem
+
+' ============================================================
+' Model associations with multiplicity
+' ============================================================
+Order "1" --> "*" OrderItem
+OrderItem "*" --> "1" MenuItem
+Order "*" --> "1" AreaTable
+Order "1" --> "0..1" Bill
+Bill "1" --> "0..1" Payment
+User "1" --> "*" Order
+
+' ============================================================
+' Enum reference
+' ============================================================
+Bill --> PaymentMethod
+Payment --> PaymentMethod
+
+@enduml

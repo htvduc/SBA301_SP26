@@ -1,0 +1,59 @@
+@startuml Menu Management - Component Communication
+title Category / Menu Item / Customization / Branch Menu: Owner quản lý thực đơn
+
+skinparam componentStyle rectangle
+top to bottom direction
+
+actor "Owner" as Owner
+
+package "API" {
+  [CategoryController] as CategoryController
+  [MenuItemController] as MenuItemController
+  [CustomizationController] as CustomizationController
+  [BranchMenuItemController] as BranchMenuItemController
+}
+
+package "Services" {
+  [CategoryService] as CategorySvc
+  [MenuItemService] as MenuItemSvc
+  [CustomizationService] as CustomizationSvc
+  [BranchService] as BranchSvc
+  [BranchMenuItemService] as BranchMenuItemSvc
+  [MediaService] as MediaSvc
+}
+
+package "Persistence" {
+  [CategoryRepository] as CategoryRepo
+  [MenuItemRepository] as MenuItemRepo
+  [CustomizationRepository] as CustomizationRepo
+  [BranchMenuItemRepository] as BranchMenuItemRepo
+}
+
+Owner --> CategoryController : create\nupdate\ngetByRestaurant
+Owner --> MenuItemController : create\nupdate\ngetByRestaurant
+Owner --> CustomizationController : create\nupdate\ngetByCategory
+Owner --> BranchMenuItemController : assign\ngetByBranch
+
+CategoryController --> CategorySvc : create\nupdate\nfindByRestaurant
+CategorySvc --> CategoryRepo : save\nfindAllByRestaurant
+
+MenuItemController --> MenuItemSvc : create\nupdate\nfindByRestaurant
+MenuItemSvc --> CategorySvc : findById
+MenuItemSvc --> MenuItemRepo : save\nfindByRestaurant
+MenuItemSvc --> MediaSvc : (image)
+
+CustomizationController --> CustomizationSvc : create\nupdate\nfindByCategory
+CustomizationSvc --> CategorySvc : findById
+CustomizationSvc --> CustomizationRepo : save\nfindByCategory
+
+BranchMenuItemController --> BranchMenuItemSvc : assignMenuItems\ngetByBranch
+BranchMenuItemSvc --> BranchSvc : findById
+BranchMenuItemSvc --> MenuItemSvc : findByRestaurant
+BranchMenuItemSvc --> BranchMenuItemRepo : save\nfindByBranch
+
+note bottom of BranchMenuItemSvc
+  Gán món từ menu restaurant
+  vào chi nhánh (branch).
+end note
+
+@enduml

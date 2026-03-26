@@ -1,0 +1,212 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-orderitem-rms",
+		"name": "RMS — Waiter Order & OrderItem",
+		"description": "Collection kiểm thử API liên quan **OrderItem** (tạo đơn có món, thêm món, cập nhật, xóa) và các GET trả về `orderLines[].orderItems[]`.\n\n**Cấu hình:** đặt biến `baseUrl` = `http://localhost:8080/api` (mặc định backend port 8080).\n\n**Auth:** `/api/waiter/orders/**` đang `permitAll` trong SecurityConfig — không bắt buộc JWT cho môi trường dev.\n\n**Response chuẩn thành công:** HTTP `200`, body `{\"code\": 1000, \"message\": \"Success\", \"result\": ...}`.\n\n**Lỗi thường gặp:** `404` + `code` theo handler (EntityNotFound), `400` validation, hoặc `AppException` với `code`/`message` tùy nghiệp vụ.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api"
+		},
+		{
+			"key": "areaTableId",
+			"value": "00000000-0000-0000-0000-000000000001",
+			"type": "string"
+		},
+		{
+			"key": "menuItemId",
+			"value": "00000000-0000-0000-0000-000000000002",
+			"type": "string"
+		},
+		{
+			"key": "customizationId",
+			"value": "00000000-0000-0000-0000-000000000003",
+			"type": "string"
+		},
+		{
+			"key": "orderId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "orderItemId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "tableId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "branchId",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "1. Tạo đơn & thêm món (OrderItem trong body)",
+			"item": [
+				{
+					"name": "POST Tạo order kèm danh sách món",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"areaTableId\": \"{{areaTableId}}\",\n  \"items\": [\n    {\n      \"menuItemId\": \"{{menuItemId}}\",\n      \"quantity\": 2,\n      \"note\": \"Ít đá\",\n      \"customizations\": [\n        {\n          \"customizationId\": \"{{customizationId}}\",\n          \"quantity\": 1\n        }\n      ]\n    }\n  ]\n}"
+						},
+						"url": "{{baseUrl}}/waiter/orders",
+						"description": "## Mô tả\nTạo order mới cho bàn (`areaTableId`) và **tạo OrderItem** cho từng phần tử trong `items` (giống cấu trúc khi thêm món sau).\n\n## Body mẫu\n- `areaTableId`: UUID bàn (area_table).\n- `items[]`: mỗi phần tử là `CreateOrderItemRequest` — `menuItemId`, `quantity`, `note` (optional), `customizations` (optional, có thể `[]`).\n\n## Kết quả expected\n| | |\n|---|---|\n| **HTTP** | `200 OK` |\n| **code** | `1000` |\n| **result** | `OrderDTO` gồm `orderId`, `orderLines[]`, mỗi line có `orderItems[]` với `orderItemId`, `menuItemId`, `quantity`, `totalPrice`, `customizations`... |\n\nSau khi gọi thành công, copy `result.orderId` vào biến collection `orderId`, và `orderItemId` từ `result.orderLines[0].orderItems[0].orderItemId` để dùng cho request sau."
+					},
+					"response": []
+				},
+				{
+					"name": "POST Thêm món vào order đã có",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"items\": [\n    {\n      \"menuItemId\": \"{{menuItemId}}\",\n      \"quantity\": 1,\n      \"note\": null,\n      \"customizations\": []\n    }\n  ]\n}"
+						},
+						"url": "{{baseUrl}}/waiter/orders/{{orderId}}/items",
+						"description": "## Mô tả\nThêm một hoặc nhiều **OrderItem** mới vào order đang mở (`orderId`).\n\n## Body mẫu (`AddItemsToOrderRequest`)\nChỉ có `items`: danh sách `CreateOrderItemRequest` (cùng schema với tạo order).\n\n## Kết quả expected\n| | |\n|---|---|\n| **HTTP** | `200 OK` |\n| **code** | `1000` |\n| **result** | `OrderDTO` đầy đủ sau khi thêm line/items mới |\n\n**Lỗi:** `orderId` không tồn tại hoặc trạng thái không cho phép → thường `404` hoặc `AppException` tùy service."
+					},
+					"response": []
+				}
+			],
+			"description": "Hai endpoint ghi nhận **OrderItem** qua mảng `items` trong body."
+		},
+		{
+			"name": "2. Đọc order (xác minh OrderItem trong response)",
+			"item": [
+				{
+					"name": "GET Chi tiết order theo orderId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/waiter/orders/{{orderId}}",
+						"description": "## Mô tả\nLấy một order; trong `result.orderLines[].orderItems[]` là toàn bộ **OrderItem** hiện có.\n\n## Body\nKhông có.\n\n## Kết quả expected\n| | |\n|---|---|\n| **HTTP** | `200 OK` |\n| **result.orderLines[].orderItems** | Mảng `OrderItemDTO`: `orderItemId`, `menuItemName`, `quantity`, `totalPrice`, `note`, `customizations`... |\n\n**Lỗi:** `404` nếu không tìm thấy order."
+					},
+					"response": []
+				},
+				{
+					"name": "GET Order đang active theo tableId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/waiter/orders/table/{{tableId}}/active",
+						"description": "## Mô tả\nLấy order đang hoạt động của bàn (`tableId` = UUID của area table).\n\n## Body\nKhông có.\n\n## Kết quả expected\n| | |\n|---|---|\n| **HTTP** | `200 OK` |\n| **result** | `OrderDTO` hoặc `null` nếu bàn không có order active — cả hai đều `200` |\n\nNếu có order, cấu trúc `orderLines[].orderItems[]` giống GET theo `orderId`."
+					},
+					"response": []
+				},
+				{
+					"name": "GET Danh sách orders theo branch",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/waiter/orders/branch/{{branchId}}",
+						"description": "## Mô tả\nDanh sách orders của chi nhánh — thường dùng để kiểm tra nhiều đơn; mỗi phần tử có `orderLines` và **orderItems** nếu service map đầy đủ.\n\n## Body\nKhông có.\n\n## Kết quả expected\n| | |\n|---|---|\n| **HTTP** | `200 OK` |\n| **result** | `OrderDTO[]` |"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Danh sách orders ACTIVE theo branch",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/waiter/orders/branch/{{branchId}}/active",
+						"description": "## Mô tả\nChỉ các order đang active của branch.\n\n## Kết quả expected\n| | |\n|---|---|\n| **HTTP** | `200 OK` |\n| **result** | `OrderDTO[]` |"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Lịch sử order (summary — không chi tiết từng OrderItem)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/waiter/orders/branch/{{branchId}}/history",
+						"description": "## Mô tả\nLịch sử dạng **tóm tắt** (`OrderHistorySummaryDTO`) — trong code comment: không chứa order lines/items chi tiết. Hữu ích để kiểm tra endpoint nhưng **không** thay thế GET chi tiết order nếu cần verify từng OrderItem.\n\n## Kết quả expected\n| | |\n|---|---|\n| **HTTP** | `200 OK` |\n| **result** | `OrderHistorySummaryDTO[]` |"
+					},
+					"response": []
+				}
+			],
+			"description": "Các GET trả về `OrderDTO` (trừ history summary) để đối chiếu **orderItem** sau khi thêm/sửa/xóa."
+		},
+		{
+			"name": "3. Cập nhật & xóa OrderItem",
+			"item": [
+				{
+					"name": "PUT Cập nhật số lượng/ghi chú OrderItem",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quantity\": 3,\n  \"note\": \"Không hành\"\n}"
+						},
+						"url": "{{baseUrl}}/waiter/orders/items/{{orderItemId}}",
+						"description": "## Mô tả\nCập nhật **một** OrderItem (số lượng, ghi chú). Server tính lại `totalPrice` và tổng order.\n\n## Body mẫu (`UpdateOrderItemRequest`)\n```json\n{\n  \"quantity\": 3,\n  \"note\": \"Không hành\"\n}\n```\n\n## Kết quả expected\n| | |\n|---|---|\n| **HTTP** | `200 OK` |\n| **code** | `1000` |\n| **result** | `OrderDTO` sau cập nhật — kiểm tra `orderLines[].orderItems[]` tương ứng `orderItemId` |\n\n**Lỗi:** `orderItemId` không tồn tại → `404`."
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Xóa (soft) OrderItem",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseUrl}}/waiter/orders/items/{{orderItemId}}",
+						"description": "## Mô tả\nĐánh dấu OrderItem **DELETED** (soft delete), cập nhật tổng order.\n\n## Body\nKhông có.\n\n## Kết quả expected\n| | |\n|---|---|\n| **HTTP** | `200 OK` |\n| **code** | `1000` |\n| **result** | `OrderDTO` — item đã xóa có thể không còn trong list hiển thị tùy logic map DTO (chỉ ACTIVE) |\n\n**Lỗi:** `404` nếu không tìm thấy."
+					},
+					"response": []
+				}
+			],
+			"description": "Hai endpoint trực tiếp theo `orderItemId` trong path."
+		},
+		{
+			"name": "4. Khác (liên quan order, không chỉ OrderItem)",
+			"item": [
+				{
+					"name": "PUT Hủy order",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "{{baseUrl}}/waiter/orders/{{orderId}}/cancel",
+						"description": "## Mô tả\nHủy cả order (ảnh hưởng toàn bộ items).\n\n## Kết quả expected\n| | |\n|---|---|\n| **HTTP** | `200 OK` |\n| **result** | `OrderDTO` với trạng thái đã hủy (theo nghiệp vụ) |"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Số bill/order hôm nay (branch)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/waiter/orders/branch/{{branchId}}/today-count",
+						"description": "## Mô tả\nĐếm số bill hôm nay (BillService) — không trả về OrderItem.\n\n## Kết quả expected\n| | |\n|---|---|\n| **HTTP** | `200 OK` |\n| **result** | `number` (Long) |"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoint cùng controller waiter orders; dùng khi kịch bản test cần hủy đơn hoặc thống kê."
+		}
+	]
+}

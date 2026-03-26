@@ -1,0 +1,36 @@
+@startuml Payment Flow - Component Communication
+title Confirm Payment: Controller – Service – Repository (communication)
+
+skinparam componentStyle rectangle
+
+package "API" {
+  [WaiterBillController] as Controller
+}
+
+package "Service" {
+  [BillService] as BillSvc
+}
+
+package "Persistence" {
+  [OrderRepository] as OrderRepo
+  [BranchRepository] as BranchRepo
+  [AreaTableRepository] as TableRepo
+  [BillRepository] as BillRepo
+}
+
+actor "Receptionist" as Receptionist
+
+Receptionist --> Controller : POST confirm\n(orderId, branchId, paymentMethod, note)
+Controller --> BillSvc : confirmPayment(request)
+BillSvc --> OrderRepo : findById\nsave(COMPLETED)
+BillSvc --> BranchRepo : findById
+BillSvc --> TableRepo : save(FREE)
+BillSvc --> BillRepo : save(Bill)
+
+note right of BillSvc
+  Order EATING → COMPLETED.
+  Table → FREE.
+  Bill: finalPrice, paymentMethod, note.
+end note
+
+@enduml

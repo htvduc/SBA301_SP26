@@ -1,0 +1,55 @@
+@startuml Create Branch - Sequence Diagram
+
+actor "Restaurant Owner" as Owner
+participant "BranchController" as Controller
+participant "BranchService" as Service
+participant "RestaurantRepository" as RestaurantRepo
+participant "BranchRepository" as BranchRepo
+participant "BranchMapper" as Mapper
+database "Database" as DB
+
+== Create Branch Request ==
+Owner -> Controller : POST /api/branches\n(BranchDTO:\nrestaurantId, address, mail, ...)
+activate Controller
+
+Controller -> Service : create(dto)
+activate Service
+
+Service -> RestaurantRepo : findById(dto.getRestaurantId())
+activate RestaurantRepo
+RestaurantRepo -> DB : SELECT restaurant by id
+DB --> RestaurantRepo : Optional<Restaurant>
+RestaurantRepo --> Service : Optional<Restaurant>
+deactivate RestaurantRepo
+
+alt cannot create (not found / unauthorized / limit)
+    Service --> Controller : throw AppException
+    Controller --> Owner : 4xx ApiResponse (error)
+else success
+    Service -> Mapper : toEntity(dto)\nset restaurant on entity
+    activate Mapper
+    Mapper --> Service : Branch entity
+    deactivate Mapper
+
+    Service -> BranchRepo : save(entity)
+    activate BranchRepo
+    BranchRepo -> DB : INSERT branch
+    DB --> BranchRepo : Branch
+    BranchRepo --> Service : Branch
+    deactivate BranchRepo
+
+    Service -> Mapper : toDto(branch)
+    activate Mapper
+    Mapper --> Service : BranchDTO
+    deactivate Mapper
+
+    Service --> Controller : BranchDTO
+    deactivate Service
+
+    Controller -> Controller : ApiResponse.setResult(branchDTO)
+
+    Controller --> Owner : 200 ApiResponse<BranchDTO>
+    deactivate Controller
+end
+
+@enduml

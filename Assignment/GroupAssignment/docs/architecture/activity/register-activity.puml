@@ -1,0 +1,27 @@
+@startuml Register - Activity Diagram
+
+|User|
+start
+:Enter email, password, username;
+
+:Submit signup;
+
+|System|
+:Validate signup data;
+
+if (Email already exists?) then (yes)
+  :Return error;
+  stop
+else (no)
+endif
+
+:Create user (encode password, set role RESTAURANT_OWNER);
+
+:Store user;
+
+:Return confirmation;
+
+|User|
+stop
+
+@enduml

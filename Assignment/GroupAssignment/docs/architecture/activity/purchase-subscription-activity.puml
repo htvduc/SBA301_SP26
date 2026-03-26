@@ -1,0 +1,47 @@
+@startuml Purchase Subscription - Activity Diagram
+
+|Owner|
+start
+:Select package;
+
+if (New subscription?) then (yes)
+  :Enter restaurant details;
+else (Renew or Upgrade)
+  :Select restaurant;
+  if (Upgrade?) then (yes)
+    :Select new package;
+  endif
+endif
+
+:Submit (create / renew / upgrade);
+
+|System|
+if (New?) then (yes)
+  :Create restaurant;
+  :Create subscription (PENDING_PAYMENT);
+else (Renew / Upgrade)
+  :Get active subscription;
+endif
+
+:Create payment (PayOS link);
+:Save payment PENDING;
+:Return payment URL / QR;
+
+|Owner|
+:Go to checkout;
+:Pay at PayOS;
+
+if (Payment success?) then (yes)
+else (no)
+endif
+
+|System|
+:Webhook: payment success;
+:Set payment SUCCESS;
+:Set subscription ACTIVE\n(New: set dates / Renew: extend / Upgrade: change package);
+:Set restaurant active;
+
+|Owner|
+stop
+
+@enduml

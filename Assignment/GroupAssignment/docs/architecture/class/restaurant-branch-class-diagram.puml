@@ -1,0 +1,137 @@
+@startuml Restaurant / Branch Module - Class Diagram
+
+top to bottom direction
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam defaultFontSize 11
+skinparam classFontSize 12
+skinparam classFontStyle bold
+skinparam arrowColor #555555
+
+title Restaurant / Branch Module — Class Diagram
+
+' ============================================================
+' CONTROLLERS (top)
+' ============================================================
+class RestaurantController {
+  + getAll() : List<RestaurantDTO>
+  + getById(id : UUID) : RestaurantDTO
+  + create(request : RestaurantCreateRequest) : RestaurantDTO
+  + update(id : UUID, dto : RestaurantDTO) : RestaurantDTO
+  + delete(id : UUID) : void
+  + getByOwner(userId : UUID) : List<RestaurantDTO>
+}
+
+class BranchController {
+  + getAll() : List<BranchDTO>
+  + getById(id : UUID) : BranchDTO
+  + create(dto : BranchDTO) : BranchDTO
+  + update(id : UUID, dto : BranchDTO) : BranchDTO
+  + delete(id : UUID) : void
+  + getByRestaurant(restaurantId : UUID) : List<BranchDTO>
+  + getActiveByRestaurant(restaurantId : UUID) : List<BranchDTO>
+  + getBranchesByOwner(ownerId : UUID) : List<BranchDTO>
+}
+
+' ============================================================
+' REQUEST DTOs (middle-left)
+' ============================================================
+class RestaurantCreateRequest {
+  - userId : UUID
+  - name : String
+  - email : String
+  - restaurantPhone : String
+  - publicUrl : String
+  - description : String
+}
+
+' ============================================================
+' RESPONSE DTOs (middle-right)
+' ============================================================
+class RestaurantDTO {
+  - restaurantId : UUID
+  - userId : UUID
+  - name : String
+  - email : String
+  - status : boolean
+  - restaurantPhone : String
+  - publicUrl : String
+  - description : String
+}
+
+class BranchDTO {
+  - branchId : UUID
+  - restaurantId : UUID
+  - restaurantName : String
+  - address : String
+  - branchPhone : String
+  - openingTime : LocalTime
+  - closingTime : LocalTime
+  - isActive : boolean
+  - mail : String
+  - staffCount : long
+}
+
+' ============================================================
+' DOMAIN MODELS (bottom)
+' ============================================================
+class Restaurant {
+  - restaurantId : UUID
+  - name : String
+  - email : String
+  - status : boolean
+  - restaurantPhone : String
+  - publicUrl : String
+  - description : String
+  - createdAt : Instant
+  - updatedAt : Instant
+  - user : User
+  - branches : Set<Branch>
+}
+
+class Branch {
+  - branchId : UUID
+  - address : String
+  - branchPhone : String
+  - openingTime : LocalTime
+  - closingTime : LocalTime
+  - isActive : boolean
+  - mail : String
+  - createdAt : Instant
+  - updatedAt : Instant
+  - restaurant : Restaurant
+  - manager : User
+}
+
+class User {
+  - userId : UUID
+  - email : String
+  - username : String
+}
+
+' ============================================================
+' Controller dependencies → Request DTOs
+' ============================================================
+RestaurantController ..> RestaurantCreateRequest
+
+' ============================================================
+' Controller dependencies → Response DTOs
+' ============================================================
+RestaurantController ..> RestaurantDTO
+BranchController ..> BranchDTO
+
+' ============================================================
+' Response → Model dependencies
+' ============================================================
+RestaurantDTO ..> Restaurant
+BranchDTO ..> Branch
+
+' ============================================================
+' Model associations with multiplicity
+' ============================================================
+User "1" --> "*" Restaurant
+Restaurant "1" --> "*" Branch
+Branch "*" --> "0..1" User
+
+@enduml

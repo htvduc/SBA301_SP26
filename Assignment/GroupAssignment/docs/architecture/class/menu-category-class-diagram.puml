@@ -1,0 +1,92 @@
+@startuml Menu / Category Module - Class Diagram
+
+top to bottom direction
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam defaultFontSize 11
+skinparam classFontSize 12
+skinparam classFontStyle bold
+skinparam arrowColor #555555
+
+title Menu / Category Module — Class Diagram
+
+' ============================================================
+' CONTROLLERS (top)
+' ============================================================
+class MenuController {
+  + getAll() : List<MenuDTO>
+  + getById(id : UUID) : MenuDTO
+  + create(request) : MenuDTO
+  + update(id : UUID, dto : MenuDTO) : MenuDTO
+  + delete(id : UUID) : void
+}
+
+class CategoryController {
+  + getAll() : List<CategoryDTO>
+  + getById(id : UUID) : CategoryDTO
+  + create(request) : CategoryDTO
+  + update(id : UUID, dto : CategoryDTO) : CategoryDTO
+  + delete(id : UUID) : void
+}
+
+' ============================================================
+' DTOs (middle)
+' ============================================================
+class MenuDTO {
+  - menuId : UUID
+  - restaurantId : UUID
+  - name : String
+  - status : EntityStatus
+}
+
+class CategoryDTO {
+  - categoryId : UUID
+  - menuId : UUID
+  - name : String
+  - status : EntityStatus
+}
+
+' ============================================================
+' DOMAIN MODELS (bottom)
+' ============================================================
+class Menu {
+  - menuId : UUID
+  - name : String
+  - status : EntityStatus
+  - restaurant : Restaurant
+  - categories : Set<Category>
+}
+
+class Category {
+  - categoryId : UUID
+  - name : String
+  - status : EntityStatus
+  - menu : Menu
+}
+
+class Restaurant {
+  - restaurantId : UUID
+  - name : String
+  - menus : Set<Menu>
+}
+
+' ============================================================
+' Controller dependencies → DTOs
+' ============================================================
+MenuController ..> MenuDTO
+CategoryController ..> CategoryDTO
+
+' ============================================================
+' DTO dependencies → Domain Models
+' ============================================================
+MenuDTO ..> Menu
+CategoryDTO ..> Category
+
+' ============================================================
+' Model associations with multiplicity
+' ============================================================
+Restaurant "1" --> "*" Menu
+Menu "1" --> "*" Category
+
+@enduml

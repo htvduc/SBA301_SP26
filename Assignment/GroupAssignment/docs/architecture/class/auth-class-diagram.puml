@@ -1,0 +1,142 @@
+@startuml Authentication Module - Class Diagram
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam defaultFontSize 11
+skinparam classFontSize 12
+skinparam classFontStyle bold
+skinparam arrowColor #555555
+
+title Authentication Module — Class Diagram
+
+' ============================================================
+' CONTROLLERS (top)
+' ============================================================
+class AuthenticationController {
+  + login(LoginRequest) : AuthenticationResponse
+  + staffLogin(StaffLoginRequest) : StaffAuthResponse
+  + refresh(RefreshRequest) : AuthenticationResponse
+  + logout(LogoutRequest) : void
+}
+
+class UserController {
+  + signup(SignupRequest) : UserResponse
+  + changePassword(ChangePasswordRequest) : void
+  + forgetPassword(ForgetPasswordRequest) : void
+}
+
+' ============================================================
+' REQUEST DTOs (middle-left)
+' ============================================================
+class LoginRequest {
+  - email : String
+  - password : String
+}
+
+class StaffLoginRequest {
+  - username : String
+  - password : String
+}
+
+class SignupRequest {
+  - email : String
+  - password : String
+  - username : String
+}
+
+class ChangePasswordRequest {
+  - userId : UUID
+  - password : String
+  - newPassword : String
+}
+
+' ============================================================
+' RESPONSE DTOs (middle-right)
+' ============================================================
+class AuthenticationResponse {
+  - accessToken : String
+  - refreshToken : String
+  - user : UserResponse
+}
+
+class StaffAuthResponse {
+  - accessToken : String
+  - refreshToken : String
+  - staffInfo : StaffInfo
+}
+
+class UserResponse {
+  - userId : UUID
+  - email : String
+  - username : String
+  - role : String
+}
+
+' ============================================================
+' DOMAIN MODELS (bottom)
+' ============================================================
+class User {
+  - userId : UUID
+  - email : String
+  - password : String
+  - username : String
+  - status : EntityStatus
+  - role : Role
+}
+
+class StaffAccount {
+  - staffAccountId : UUID
+  - username : String
+  - password : String
+  - status : EntityStatus
+  - role : Role
+}
+
+class Role {
+  - roleId : UUID
+  - name : RoleName
+  - description : String
+}
+
+enum RoleName <<enum>> {
+  ADMIN
+  RESTAURANT_OWNER
+  BRANCH_MANAGER
+  WAITER
+  RECEPTIONIST
+}
+
+' ============================================================
+' Controller dependencies → Request DTOs
+' ============================================================
+AuthenticationController ..> LoginRequest
+AuthenticationController ..> StaffLoginRequest
+UserController ..> SignupRequest
+UserController ..> ChangePasswordRequest
+
+' ============================================================
+' Controller dependencies → Response DTOs
+' ============================================================
+AuthenticationController ..> AuthenticationResponse
+AuthenticationController ..> StaffAuthResponse
+UserController ..> UserResponse
+
+' ============================================================
+' Response composition
+' ============================================================
+AuthenticationResponse --> UserResponse
+
+' ============================================================
+' Response → Model dependencies
+' ============================================================
+UserResponse ..> User
+StaffAuthResponse ..> StaffAccount
+
+' ============================================================
+' Model associations with multiplicity
+' ============================================================
+User "*" --> "1" Role
+StaffAccount "*" --> "1" Role
+Role --> RoleName
+
+@enduml

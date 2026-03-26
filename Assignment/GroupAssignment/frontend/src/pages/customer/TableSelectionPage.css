@@ -1,0 +1,120 @@
+/* Custom DatePicker Styling */
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker-popper {
+  z-index: 50 !important;
+}
+
+.react-datepicker {
+  font-family: inherit;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.react-datepicker__header {
+  background-color: #f97316;
+  border-bottom: none;
+  padding: 1rem;
+  border-radius: 0;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header {
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.react-datepicker__time-container {
+  border-left: 1px solid #e5e7eb;
+  width: 100px;
+}
+
+.react-datepicker__time-container .react-datepicker__time {
+  background: white;
+}
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box {
+  width: 100%;
+}
+
+.react-datepicker__time-list {
+  padding: 0.25rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: #f97316 #f3f4f6;
+}
+
+.react-datepicker__time-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.react-datepicker__time-list::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+
+.react-datepicker__time-list::-webkit-scrollbar-thumb {
+  background: #f97316;
+  border-radius: 3px;
+}
+
+.react-datepicker__time-list-item {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  transition: all 0.15s ease;
+}
+
+.react-datepicker__time-list-item:hover {
+  background-color: #fed7aa !important;
+  color: #9a3412;
+}
+
+.react-datepicker__time-list-item--selected {
+  background-color: #f97316 !important;
+  color: white !important;
+  font-weight: 600;
+}
+
+.react-datepicker__time-list-item--disabled {
+  color: #d1d5db;
+  cursor: not-allowed;
+}
+
+.react-datepicker__time-list-item--disabled:hover {
+  background-color: transparent !important;
+  color: #d1d5db !important;
+}
+
+/* Date input custom styling */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+input[type="date"]::-webkit-datetime-edit-text,
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field {
+  color: #111827;
+}
+
+input[type="date"]:focus::-webkit-datetime-edit-text,
+input[type="date"]:focus::-webkit-datetime-edit-month-field,
+input[type="date"]:focus::-webkit-datetime-edit-day-field,
+input[type="date"]:focus::-webkit-datetime-edit-year-field {
+  color: #f97316;
+}
+
+/* Shadcn Select custom styling for this page */
+[data-radix-popper-content-wrapper] {
+  z-index: 50 !important;
+}

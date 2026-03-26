@@ -1,0 +1,43 @@
+@startuml Payment Flow - Activity Diagram
+
+|Receptionist|
+start
+:Request bill for order;
+
+:Select payment method;
+
+:Enter note (optional);
+
+:Submit confirm payment\n(orderId, branchId, paymentMethod, note);
+
+|System|
+:Find order by orderId;
+
+if (Order found and status EATING?) then (yes)
+else (no)
+  :Return error;
+  stop
+endif
+
+:Find branch by branchId;
+
+if (Branch exists?) then (yes)
+else (no)
+  :Return error;
+  stop
+endif
+
+:Set order status COMPLETED;
+
+:Set table status FREE;
+
+:Create bill\n(finalPrice from order, paymentMethod, note, paidTime);
+
+:Save bill;
+
+:Return bill confirmation;
+
+|Receptionist|
+stop
+
+@enduml

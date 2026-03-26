@@ -1,0 +1,32 @@
+@startuml Reservation Lifecycle - State Diagram
+title Reservation Lifecycle (ReservationStatus)
+
+skinparam state {
+  BackgroundColor White
+  BorderColor #333333
+}
+
+state "PENDING" as PENDING
+state "CONFIRMED" as CONFIRMED
+state "CANCELLED" as CANCELLED
+
+[*] --> PENDING : createReservation
+
+PENDING --> CONFIRMED : confirm
+
+PENDING --> CANCELLED : cancel
+
+CONFIRMED --> [*]
+
+CANCELLED --> [*]
+
+note bottom
+  **confirm** = nhà hàng xác nhận đặt bàn (một bước, đúng nghiệp vụ thông thường).
+  **cancel** = hủy đặt bàn (khách hoặc nhà hàng).
+  ----
+  Enum còn **APPROVED**: dùng nếu cần luồng hai bước
+  (vd. nhà hàng duyệt → APPROVED, khách xác nhận lại → CONFIRMED).
+  Đa số chỉ cần PENDING → CONFIRMED.
+end note
+
+@enduml

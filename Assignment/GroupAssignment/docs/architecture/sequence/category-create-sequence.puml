@@ -1,0 +1,50 @@
+@startuml Create Category - Sequence Diagram
+
+actor "Restaurant Owner" as Owner
+participant "CategoryController" as Controller
+participant "CategoryService" as Service
+participant "RestaurantRepository" as RestaurantRepo
+participant "CategoryRepository" as CategoryRepo
+participant "CategoryMapper" as Mapper
+database "Database" as DB
+
+== Create Category Request ==
+Owner -> Controller : POST /api/categories\n(CategoryCreateRequest:\nrestaurantId, name, customizationIds)
+activate Controller
+
+Controller -> Service : create(request)
+activate Service
+
+Service -> RestaurantRepo : findById(restaurantId)
+activate RestaurantRepo
+RestaurantRepo -> DB : SELECT restaurant by id
+DB --> RestaurantRepo : Optional<Restaurant>
+RestaurantRepo --> Service : Optional<Restaurant>
+deactivate RestaurantRepo
+
+alt restaurant not found\nor customization not found
+    Service --> Controller : throw AppException
+    Controller --> Owner : 4xx ApiResponse (error)
+else success
+    Service -> CategoryRepo : save(category)
+    activate CategoryRepo
+    CategoryRepo -> DB : INSERT category
+    DB --> CategoryRepo : Category
+    CategoryRepo --> Service : Category
+    deactivate CategoryRepo
+
+    Service -> Mapper : toCategoryDTO(saved)
+    activate Mapper
+    Mapper --> Service : CategoryDTO
+    deactivate Mapper
+
+    Service --> Controller : CategoryDTO
+    deactivate Service
+
+    Controller -> Controller : ApiResponse.setResult(categoryDTO)
+
+    Controller --> Owner : 200 ApiResponse<CategoryDTO>
+    deactivate Controller
+end
+
+@enduml

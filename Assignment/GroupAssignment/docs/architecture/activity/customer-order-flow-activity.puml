@@ -1,0 +1,43 @@
+@startuml Customer Order Flow - Activity Diagram
+
+|Customer|
+start
+:Scan QR or open digital menu;
+
+:Browse menu items;
+
+:Select dish;
+
+if (Customize dish?) then (yes)
+  :Choose options (e.g. size, toppings);
+else (no)
+endif
+
+:Add item to order;
+
+:Review order;
+
+:Submit order;
+
+|System|
+:Resolve table (from QR if scanned);
+
+if (Table valid?) then (no)
+  :Return error;
+  stop
+else (yes)
+endif
+
+:Create order or add items to existing order;
+
+:Store order;
+
+:Return order confirmation;
+
+|Staff|
+:Receive order notification;
+
+|Customer|
+stop
+
+@enduml

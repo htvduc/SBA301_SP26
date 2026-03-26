@@ -1,0 +1,67 @@
+@startuml Create Bill - Sequence Diagram
+
+actor "Receptionist" as Receptionist
+participant "WaiterBillController" as Controller
+participant "BillService" as Service
+participant "OrderRepository" as OrderRepo
+participant "BranchRepository" as BranchRepo
+participant "AreaTableRepository" as TableRepo
+participant "BillRepository" as BillRepo
+database "Database" as DB
+
+== Create Bill Request ==
+note right of Receptionist : Bill is created via\nconfirm payment endpoint
+Receptionist -> Controller : POST /api/waiter/bills/confirm\n(ConfirmPaymentRequest:\norderId, branchId, paymentMethod, note)
+activate Controller
+
+Controller -> Service : confirmPayment(request)
+activate Service
+
+Service -> OrderRepo : findById(orderId)
+activate OrderRepo
+OrderRepo -> DB : SELECT order by id
+DB --> OrderRepo : Optional<Order>
+OrderRepo --> Service : Optional<Order>
+deactivate OrderRepo
+
+Service -> BranchRepo : findById(branchId)
+activate BranchRepo
+BranchRepo -> DB : SELECT branch by id
+DB --> BranchRepo : Optional<Branch>
+BranchRepo --> Service : Optional<Branch>
+deactivate BranchRepo
+
+alt order not found\nor order already completed\nor branch not found
+    Service --> Controller : throw AppException
+    Controller --> Receptionist : 4xx ApiResponse (error)
+else success
+    Service -> OrderRepo : save(order COMPLETED)
+    activate OrderRepo
+    OrderRepo -> DB : UPDATE order
+    DB --> OrderRepo : Order
+    OrderRepo --> Service : Order
+    deactivate OrderRepo
+
+    Service -> TableRepo : save(table FREE)
+    activate TableRepo
+    TableRepo -> DB : UPDATE area_table
+    DB --> TableRepo : AreaTable
+    TableRepo --> Service : AreaTable
+    deactivate TableRepo
+
+    Service -> BillRepo : save(bill)
+    activate BillRepo
+    BillRepo -> DB : INSERT bill
+    DB --> BillRepo : Bill
+    BillRepo --> Service : Bill
+    deactivate BillRepo
+
+    Service -> Service : build BillDTO
+    Service --> Controller : BillDTO
+    deactivate Service
+
+    Controller --> Receptionist : 200 ApiResponse<BillDTO>
+    deactivate Controller
+end
+
+@enduml

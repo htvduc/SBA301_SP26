@@ -1,0 +1,38 @@
+@startuml Order Line Lifecycle - State Diagram
+title Order Line Lifecycle (OrderLineStatus)
+
+skinparam state {
+  BackgroundColor White
+  BorderColor #333333
+}
+
+state "PENDING" as PENDING
+state "PREPARING" as PREPARING
+state "COMPLETED" as COMPLETED
+state "CANCELLED" as CANCELLED
+
+[*] --> PENDING : createOrderLine
+
+PENDING --> PREPARING : startPreparing
+
+PENDING --> CANCELLED : cancelLine
+
+PREPARING --> COMPLETED : complete
+
+PREPARING --> CANCELLED : cancelLine
+
+COMPLETED --> [*]
+
+CANCELLED --> [*]
+
+note bottom
+  **createOrderLine** = thêm dòng order (một đợt món) → PENDING (trong code: OrderService.createOrderLine).
+  **startPreparing** = bếp bắt đầu làm.
+  **complete** = bếp hoàn thành dòng.
+  **cancelLine** = hủy dòng order.
+  ----
+  Hiện tại code chỉ set PENDING khi tạo;
+  PREPARING / COMPLETED / CANCELLED dùng khi triển khai luồng bếp.
+end note
+
+@enduml

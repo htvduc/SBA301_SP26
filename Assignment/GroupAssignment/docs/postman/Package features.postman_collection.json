@@ -1,0 +1,143 @@
+{
+  "info": {
+    "_postman_id": "ec5f94c6-d407-48e9-aa94-e8cb84bffae9",
+    "name": "Package features",
+    "description": "API collections about Package features",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "45375410"
+  },
+  "item": [
+    {
+      "name": "Get all packages",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access-token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://bentox.store/api/packages",
+          "protocol": "https",
+          "host": [
+            "bentox",
+            "store"
+          ],
+          "path": [
+            "api",
+            "packages"
+          ]
+        },
+        "description": "Get all packages regardless of package status"
+      },
+      "response": []
+    },
+    {
+      "name": "Get all active packages",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access-token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://bentox.store/api/packages/active",
+          "protocol": "https",
+          "host": [
+            "bentox",
+            "store"
+          ],
+          "path": [
+            "api",
+            "packages",
+            "active"
+          ]
+        },
+        "description": "Get all active packages"
+      },
+      "response": []
+    },
+    {
+      "name": "Get package by id",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access-token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://bentox.store/api/packages/e4711e29-5e55-4e48-8e66-fa8955c72a24",
+          "protocol": "https",
+          "host": [
+            "bentox",
+            "store"
+          ],
+          "path": [
+            "api",
+            "packages",
+            "e4711e29-5e55-4e48-8e66-fa8955c72a24"
+          ]
+        },
+        "description": "Get package by id"
+      },
+      "response": []
+    },
+    {
+      "name": "Get features list",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access-token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://bentox.store/api/features",
+          "protocol": "https",
+          "host": [
+            "bentox",
+            "store"
+          ],
+          "path": [
+            "api",
+            "features"
+          ]
+        },
+        "description": "List of all available features"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "access-token",
+      "value": ""
+    }
+  ]
+}

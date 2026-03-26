@@ -1,0 +1,1673 @@
+{
+	"info": {
+		"_postman_id": "f09635ff-ebe5-40c5-a3ea-48ba8bc161a5",
+		"name": "Restaurant Management API - Promotions & Staff",
+		"description": "Bộ Collection kiểm thử API cho các module Khuyến Mãi (Promotions) và Tài khoản Nhân Viên (Staff Accounts). Bao gồm đầy đủ dữ liệu mẫu (request body) và kết quả mong đơi (response).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44975111"
+	},
+	"item": [
+		{
+			"name": "Promotions (Khuyến Mãi)",
+			"item": [
+				{
+					"name": "1. Create Promotion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"restaurantId\": \"{{restaurantId}}\",\n  \"name\": \"Summer Discount 20%\",\n  \"description\": \"Giảm giá 20% cho tất cả thức uống mùa hè\",\n  \"code\": \"SUMMER20\",\n  \"promotionType\": \"DISCOUNT\",\n  \"discountType\": \"PERCENTAGE\",\n  \"discountValue\": 20.0,\n  \"minOrderValue\": 100000.0,\n  \"maxDiscountValue\": 50000.0,\n  \"startDate\": \"2024-06-01T00:00:00Z\",\n  \"endDate\": \"2024-08-31T23:59:59Z\",\n  \"menuItemIds\": []\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/owner/promotions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"owner",
+								"promotions"
+							]
+						},
+						"description": "API dùng để tạo mới một chương trình khuyến mãi cho nhà hàng. Yêu cầu quyền Owner."
+					},
+					"response": [
+						{
+							"name": "1. Create Promotion",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"restaurantId\": \"{{restaurantId}}\",\n  \"name\": \"Summer Discount 20%\",\n  \"description\": \"Giảm giá 20% cho tất cả thức uống mùa hè\",\n  \"code\": \"SUMMER20\",\n  \"promotionType\": \"ORDER\",\n  \"discountType\": \"PERCENTAGE\",\n  \"discountValue\": 20.0,\n  \"minOrderValue\": 100000.0,\n  \"maxDiscountValue\": 50000.0,\n  \"startDate\": \"2024-06-01T00:00:00Z\",\n  \"endDate\": \"2024-08-31T23:59:59Z\",\n  \"menuItemIds\": []\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/owner/promotions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"owner",
+										"promotions"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.24.0 (Ubuntu)"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 25 Mar 2026 10:28:02 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 1000,\n    \"message\": \"Success\",\n    \"result\": {\n        \"promotionId\": \"0c87b565-1bc2-4907-92a9-334749b558b0\",\n        \"name\": \"Summer Discount 20%\",\n        \"description\": \"Giảm giá 20% cho tất cả thức uống mùa hè\",\n        \"code\": \"SUMMER20\",\n        \"promotionType\": \"ORDER\",\n        \"discountType\": \"PERCENTAGE\",\n        \"discountValue\": 20,\n        \"minOrderValue\": 100000,\n        \"maxDiscountValue\": 50000,\n        \"startDate\": \"2024-06-01T00:00:00Z\",\n        \"endDate\": \"2024-08-31T23:59:59Z\",\n        \"status\": \"ACTIVE\",\n        \"menuItems\": []\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "2. Get Promotions by Restaurant (Owner)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/owner/promotions/restaurant/{{restaurantId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"owner",
+								"promotions",
+								"restaurant",
+								"{{restaurantId}}"
+							]
+						},
+						"description": "Lấy danh sách tất cả các khuyến mãi của một nhà hàng, bao gồm cả các khuyến mãi đã hết hạn hoặc bị vô hiệu hóa."
+					},
+					"response": [
+						{
+							"name": "2. Get Promotions by Restaurant (Owner)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/owner/promotions/restaurant/{{restaurantId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"owner",
+										"promotions",
+										"restaurant",
+										"{{restaurantId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.24.0 (Ubuntu)"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 25 Mar 2026 10:32:51 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 1000,\n    \"message\": \"Success\",\n    \"result\": [\n        {\n            \"promotionId\": \"4bd24d68-18ec-4111-b51c-4d37553014c3\",\n            \"name\": \"Summer Discount\",\n            \"description\": \"giảm 8% cho toàn bộ món của nhà hàng\",\n            \"code\": \"SUM2026\",\n            \"promotionType\": \"MENU_ITEM\",\n            \"discountType\": \"PERCENTAGE\",\n            \"discountValue\": 8,\n            \"minOrderValue\": null,\n            \"maxDiscountValue\": null,\n            \"startDate\": \"2026-03-24T00:00:00Z\",\n            \"endDate\": \"2026-06-30T00:00:00Z\",\n            \"status\": \"ACTIVE\",\n            \"menuItems\": [\n                {\n                    \"menuItemId\": \"4f7068c6-dfdc-4ff7-9cc8-1c5de229c3e9\",\n                    \"name\": \"Mực ống nướng than sốt muối ớt xanh\",\n                    \"description\": \"Mực ống tươi nướng than hoa, giữ độ giòn tự nhiên, dùng kèm sốt muối ớt xanh đặc trưng.\",\n                    \"price\": 329000,\n                    \"discountedPrice\": null,\n                    \"status\": \"ACTIVE\",\n                    \"bestSeller\": false,\n                    \"hasCustomization\": true,\n                    \"restaurantId\": \"fc798efd-adad-4ce5-81f9-04d8cb9ddde1\",\n                    \"categoryId\": \"3ce54271-04e7-44d4-be4f-1f2a2ae32d9f\",\n                    \"customizationIds\": [],\n                    \"imageUrl\": null\n                },\n                {\n                    \"menuItemId\": \"d674fc47-b6e9-44b8-99a0-b5fd6f17a69e\",\n                    \"name\": \"Cá tuyết áp chảo sốt bơ chanh\",\n                    \"description\": \"Phi lê cá tuyết áp chảo da giòn, thịt mềm béo, dùng cùng sốt bơ chanh nhẹ và rau củ nướng theo mùa.\",\n                    \"price\": 499000,\n                    \"discountedPrice\": null,\n                    \"status\": \"ACTIVE\",\n                    \"bestSeller\": false,\n                    \"hasCustomization\": true,\n                    \"restaurantId\": \"fc798efd-adad-4ce5-81f9-04d8cb9ddde1\",\n                    \"categoryId\": \"95cd8c18-6545-4bac-894b-fd9de9f82d22\",\n                    \"customizationIds\": [\n                        \"f370f160-e3b4-4888-b3a7-7e98eb6bbf7e\",\n                        \"988bb877-ad48-46a6-9144-65f6f1d6547c\",\n                        \"040a5ea7-98b9-4bf6-98c8-0ac132b41591\"\n                    ],\n                    \"imageUrl\": null\n                },\n                {\n                    \"menuItemId\": \"b00b9ba3-418c-42c2-960e-29ab0048564d\",\n                    \"name\": \"Hàu sữa nướng phô mai Parmesan\",\n                    \"description\": \"Hàu sữa tươi nướng phô mai Parmesan béo nhẹ, phủ bơ tỏi thơm, dùng nóng khi vừa ra lò.\",\n                    \"price\": 219000,\n                    \"discountedPrice\": null,\n                    \"status\": \"ACTIVE\",\n                    \"bestSeller\": false,\n                    \"hasCustomization\": true,\n                    \"restaurantId\": \"fc798efd-adad-4ce5-81f9-04d8cb9ddde1\",\n                    \"categoryId\": \"652fc74a-ca46-4ae6-a3d0-14e3ac6f4a38\",\n                    \"customizationIds\": [\n                        \"81fc1f34-81d1-4cf6-8fd2-b6ebb361bd6e\",\n                        \"fe5e53d6-702e-45bf-b70e-2d7687df1705\"\n                    ],\n                    \"imageUrl\": null\n                },\n                {\n                    \"menuItemId\": \"66d33e56-01ea-4557-9f13-6809dff2c455\",\n                    \"name\": \"Tôm hùm nướng bơ tỏi kiểu Pháp\",\n                    \"description\": \"Bao gồm 600g tôm hùm\",\n                    \"price\": 1500000,\n                    \"discountedPrice\": null,\n                    \"status\": \"ACTIVE\",\n                    \"bestSeller\": false,\n                    \"hasCustomization\": true,\n                    \"restaurantId\": \"fc798efd-adad-4ce5-81f9-04d8cb9ddde1\",\n                    \"categoryId\": \"b3922a64-3465-4c16-acf2-77b417f4832a\",\n                    \"customizationIds\": [\n                        \"fe5e53d6-702e-45bf-b70e-2d7687df1705\"\n                    ],\n                    \"imageUrl\": null\n                },\n                {\n                    \"menuItemId\": \"b00f316e-ac0c-464e-a77f-6d285579d68a\",\n                    \"name\": \"Cua hoàng đế hấp rượu sake\",\n                    \"description\": \"Ngon lắm tin tôi đi\",\n                    \"price\": 1799000,\n                    \"discountedPrice\": null,\n                    \"status\": \"ACTIVE\",\n                    \"bestSeller\": false,\n                    \"hasCustomization\": true,\n                    \"restaurantId\": \"fc798efd-adad-4ce5-81f9-04d8cb9ddde1\",\n                    \"categoryId\": \"5e68b711-ed32-4499-aecc-ad75ef5e8a31\",\n                    \"customizationIds\": [],\n                    \"imageUrl\": null\n                }\n            ]\n        },\n        {\n            \"promotionId\": \"0c87b565-1bc2-4907-92a9-334749b558b0\",\n            \"name\": \"Summer Discount 20%\",\n            \"description\": \"Giảm giá 20% cho tất cả thức uống mùa hè\",\n            \"code\": \"SUMMER20\",\n            \"promotionType\": \"ORDER\",\n            \"discountType\": \"PERCENTAGE\",\n            \"discountValue\": 20,\n            \"minOrderValue\": 100000,\n            \"maxDiscountValue\": 50000,\n            \"startDate\": \"2024-06-01T00:00:00Z\",\n            \"endDate\": \"2024-08-31T23:59:59Z\",\n            \"status\": \"ACTIVE\",\n            \"menuItems\": []\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "3. Get Active Promotions (Manager)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/manager/promotions/restaurant/{{restaurantId}}/active",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"manager",
+								"promotions",
+								"restaurant",
+								"{{restaurantId}}",
+								"active"
+							]
+						},
+						"description": "Lấy danh sách các khuyến mãi ĐANG HOẠT ĐỘNG của nhà hàng (Manager view)"
+					},
+					"response": [
+						{
+							"name": "3. Get Active Promotions (Manager)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/manager/promotions/restaurant/{{restaurantId}}/active",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"manager",
+										"promotions",
+										"restaurant",
+										"{{restaurantId}}",
+										"active"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.24.0 (Ubuntu)"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 25 Mar 2026 10:33:16 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 1000,\n    \"message\": \"Success\",\n    \"result\": [\n        {\n            \"promotionId\": \"4bd24d68-18ec-4111-b51c-4d37553014c3\",\n            \"name\": \"Summer Discount\",\n            \"description\": \"giảm 8% cho toàn bộ món của nhà hàng\",\n            \"code\": \"SUM2026\",\n            \"promotionType\": \"MENU_ITEM\",\n            \"discountType\": \"PERCENTAGE\",\n            \"discountValue\": 8,\n            \"minOrderValue\": null,\n            \"maxDiscountValue\": null,\n            \"startDate\": \"2026-03-24T00:00:00Z\",\n            \"endDate\": \"2026-06-30T00:00:00Z\",\n            \"status\": \"ACTIVE\",\n            \"menuItems\": [\n                {\n                    \"menuItemId\": \"b00f316e-ac0c-464e-a77f-6d285579d68a\",\n                    \"name\": \"Cua hoàng đế hấp rượu sake\",\n                    \"description\": \"Ngon lắm tin tôi đi\",\n                    \"price\": 1799000,\n                    \"discountedPrice\": null,\n                    \"status\": \"ACTIVE\",\n                    \"bestSeller\": false,\n                    \"hasCustomization\": true,\n                    \"restaurantId\": \"fc798efd-adad-4ce5-81f9-04d8cb9ddde1\",\n                    \"categoryId\": \"5e68b711-ed32-4499-aecc-ad75ef5e8a31\",\n                    \"customizationIds\": [],\n                    \"imageUrl\": null\n                },\n                {\n                    \"menuItemId\": \"4f7068c6-dfdc-4ff7-9cc8-1c5de229c3e9\",\n                    \"name\": \"Mực ống nướng than sốt muối ớt xanh\",\n                    \"description\": \"Mực ống tươi nướng than hoa, giữ độ giòn tự nhiên, dùng kèm sốt muối ớt xanh đặc trưng.\",\n                    \"price\": 329000,\n                    \"discountedPrice\": null,\n                    \"status\": \"ACTIVE\",\n                    \"bestSeller\": false,\n                    \"hasCustomization\": true,\n                    \"restaurantId\": \"fc798efd-adad-4ce5-81f9-04d8cb9ddde1\",\n                    \"categoryId\": \"3ce54271-04e7-44d4-be4f-1f2a2ae32d9f\",\n                    \"customizationIds\": [],\n                    \"imageUrl\": null\n                },\n                {\n                    \"menuItemId\": \"b00b9ba3-418c-42c2-960e-29ab0048564d\",\n                    \"name\": \"Hàu sữa nướng phô mai Parmesan\",\n                    \"description\": \"Hàu sữa tươi nướng phô mai Parmesan béo nhẹ, phủ bơ tỏi thơm, dùng nóng khi vừa ra lò.\",\n                    \"price\": 219000,\n                    \"discountedPrice\": null,\n                    \"status\": \"ACTIVE\",\n                    \"bestSeller\": false,\n                    \"hasCustomization\": true,\n                    \"restaurantId\": \"fc798efd-adad-4ce5-81f9-04d8cb9ddde1\",\n                    \"categoryId\": \"652fc74a-ca46-4ae6-a3d0-14e3ac6f4a38\",\n                    \"customizationIds\": [\n                        \"81fc1f34-81d1-4cf6-8fd2-b6ebb361bd6e\",\n                        \"fe5e53d6-702e-45bf-b70e-2d7687df1705\"\n                    ],\n                    \"imageUrl\": null\n                },\n                {\n                    \"menuItemId\": \"d674fc47-b6e9-44b8-99a0-b5fd6f17a69e\",\n                    \"name\": \"Cá tuyết áp chảo sốt bơ chanh\",\n                    \"description\": \"Phi lê cá tuyết áp chảo da giòn, thịt mềm béo, dùng cùng sốt bơ chanh nhẹ và rau củ nướng theo mùa.\",\n                    \"price\": 499000,\n                    \"discountedPrice\": null,\n                    \"status\": \"ACTIVE\",\n                    \"bestSeller\": false,\n                    \"hasCustomization\": true,\n                    \"restaurantId\": \"fc798efd-adad-4ce5-81f9-04d8cb9ddde1\",\n                    \"categoryId\": \"95cd8c18-6545-4bac-894b-fd9de9f82d22\",\n                    \"customizationIds\": [\n                        \"f370f160-e3b4-4888-b3a7-7e98eb6bbf7e\",\n                        \"988bb877-ad48-46a6-9144-65f6f1d6547c\",\n                        \"040a5ea7-98b9-4bf6-98c8-0ac132b41591\"\n                    ],\n                    \"imageUrl\": null\n                },\n                {\n                    \"menuItemId\": \"66d33e56-01ea-4557-9f13-6809dff2c455\",\n                    \"name\": \"Tôm hùm nướng bơ tỏi kiểu Pháp\",\n                    \"description\": \"Bao gồm 600g tôm hùm\",\n                    \"price\": 1500000,\n                    \"discountedPrice\": null,\n                    \"status\": \"ACTIVE\",\n                    \"bestSeller\": false,\n                    \"hasCustomization\": true,\n                    \"restaurantId\": \"fc798efd-adad-4ce5-81f9-04d8cb9ddde1\",\n                    \"categoryId\": \"b3922a64-3465-4c16-acf2-77b417f4832a\",\n                    \"customizationIds\": [\n                        \"fe5e53d6-702e-45bf-b70e-2d7687df1705\"\n                    ],\n                    \"imageUrl\": null\n                }\n            ]\n        },\n        {\n            \"promotionId\": \"0c87b565-1bc2-4907-92a9-334749b558b0\",\n            \"name\": \"Summer Discount 20%\",\n            \"description\": \"Giảm giá 20% cho tất cả thức uống mùa hè\",\n            \"code\": \"SUMMER20\",\n            \"promotionType\": \"ORDER\",\n            \"discountType\": \"PERCENTAGE\",\n            \"discountValue\": 20,\n            \"minOrderValue\": 100000,\n            \"maxDiscountValue\": 50000,\n            \"startDate\": \"2024-06-01T00:00:00Z\",\n            \"endDate\": \"2024-08-31T23:59:59Z\",\n            \"status\": \"ACTIVE\",\n            \"menuItems\": []\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "4. Update Promotion",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"restaurantId\": \"{{restaurantId}}\",\n  \"name\": \"Summer Discount 25% Updated\",\n  \"description\": \"Giảm giá 25% (Đã cập nhật)\",\n  \"code\": \"SUMMER25\",\n  \"promotionType\": \"DISCOUNT\",\n  \"discountType\": \"PERCENTAGE\",\n  \"discountValue\": 25.0,\n  \"minOrderValue\": 100000.0,\n  \"maxDiscountValue\": 50000.0,\n  \"startDate\": \"2024-06-01T00:00:00Z\",\n  \"endDate\": \"2024-08-31T23:59:59Z\",\n  \"menuItemIds\": []\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/owner/promotions/{{promotionId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"owner",
+								"promotions",
+								"{{promotionId}}"
+							]
+						},
+						"description": "Cập nhật thông tin chi tiết của một chương trình khuyến mãi đã có."
+					},
+					"response": [
+						{
+							"name": "4. Update Promotion",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"restaurantId\": \"{{restaurantId}}\",\n  \"name\": \"Summer Discount 25% Updated\",\n  \"description\": \"Giảm giá 25% (Đã cập nhật)\",\n  \"code\": \"SUMMER25\",\n  \"promotionType\": \"ORDER\",\n  \"discountType\": \"PERCENTAGE\",\n  \"discountValue\": 25.0,\n  \"minOrderValue\": 100000.0,\n  \"maxDiscountValue\": 50000.0,\n  \"startDate\": \"2024-06-01T00:00:00Z\",\n  \"endDate\": \"2024-08-31T23:59:59Z\",\n  \"menuItemIds\": []\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/owner/promotions/{{promotionId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"owner",
+										"promotions",
+										"{{promotionId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.24.0 (Ubuntu)"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 25 Mar 2026 10:37:18 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 1000,\n    \"message\": \"Success\",\n    \"result\": {\n        \"promotionId\": \"0c87b565-1bc2-4907-92a9-334749b558b0\",\n        \"name\": \"Summer Discount 25% Updated\",\n        \"description\": \"Giảm giá 25% (Đã cập nhật)\",\n        \"code\": \"SUMMER25\",\n        \"promotionType\": \"ORDER\",\n        \"discountType\": \"PERCENTAGE\",\n        \"discountValue\": 25,\n        \"minOrderValue\": 100000,\n        \"maxDiscountValue\": 50000,\n        \"startDate\": \"2024-06-01T00:00:00Z\",\n        \"endDate\": \"2024-08-31T23:59:59Z\",\n        \"status\": \"ACTIVE\",\n        \"menuItems\": []\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "5. Update Promotion Status",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/owner/promotions/{{promotionId}}/status?status=EXPIRED",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"owner",
+								"promotions",
+								"{{promotionId}}",
+								"status"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "EXPIRED"
+								}
+							]
+						},
+						"description": "Thay đổi trạng thái của khuyến mãi (ACTIVE, INACTIVE, EXPIRED)"
+					},
+					"response": [
+						{
+							"name": "5. Update Promotion Status",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/owner/promotions/{{promotionId}}/status?status=EXPIRED",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"owner",
+										"promotions",
+										"{{promotionId}}",
+										"status"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "EXPIRED"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.24.0 (Ubuntu)"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 25 Mar 2026 10:38:53 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 1000,\n    \"message\": \"Success\",\n    \"result\": {\n        \"promotionId\": \"0c87b565-1bc2-4907-92a9-334749b558b0\",\n        \"name\": \"Summer Discount 25% Updated\",\n        \"description\": \"Giảm giá 25% (Đã cập nhật)\",\n        \"code\": \"SUMMER25\",\n        \"promotionType\": \"ORDER\",\n        \"discountType\": \"PERCENTAGE\",\n        \"discountValue\": 25,\n        \"minOrderValue\": 100000,\n        \"maxDiscountValue\": 50000,\n        \"startDate\": \"2024-06-01T00:00:00Z\",\n        \"endDate\": \"2024-08-31T23:59:59Z\",\n        \"status\": \"EXPIRED\",\n        \"menuItems\": []\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "6. Delete Promotion",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/owner/promotions/{{promotionId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"owner",
+								"promotions",
+								"{{promotionId}}"
+							]
+						},
+						"description": "Xóa một chương trình khuyến mãi."
+					},
+					"response": [
+						{
+							"name": "6. Delete Promotion",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/owner/promotions/{{promotionId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"owner",
+										"promotions",
+										"{{promotionId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.24.0 (Ubuntu)"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 25 Mar 2026 10:40:02 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 1000,\n    \"message\": \"Promotion deleted successfully\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Các API quản lý khuyến mãi dành cho Owner và Manager",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3YjdkMWIyNC1hNzA4LTQzNTUtYjczNi1jZTk0NDlmMjljNzMiLCJyb2xlIjoiUkVTVEFVUkFOVF9PV05FUiIsInNjb3BlIjoiUk9MRV9SRVNUQVVSQU5UX09XTkVSIiwiZXhwIjoxNzc0NDM3NzU0LCJpYXQiOjE3NzQ0MzQxNTQsImVtYWlsIjoidGFucGhvbmcwNzMwQGdtYWlsLmNvbSIsImp0aSI6IjZiZDYyODEzLTUyMGUtNGM4Ny1hNDZjLTRiNzEwMzIwN2Q4ZiJ9.0dvuVKgFYbLFA2Oz0Hd0AFxsS5DZiBhyh3BMIVRsgOo",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Staff Accounts (Tài khoản Nhân Viên)",
+			"item": [
+				{
+					"name": "1. Create Staff Account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"staff_waiter_01\",\n  \"password\": \"StrongPassword123!\",\n  \"branchId\": \"{{branchId}}\",\n  \"role\": {\n    \"name\": \"WAITER\",\n    \"description\": \"Nhân viên phục vụ\"\n  },\n  \"status\": \"ACTIVE\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/staff",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"staff"
+							]
+						},
+						"description": "Tạo mới tài khoản nhân viên cho chi nhánh. Yêu cầu mật khẩu mạnh."
+					},
+					"response": [
+						{
+							"name": "1. Create Staff Account",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"staff_waiter_01\",\n  \"password\": \"StrongPassword123!\",\n  \"branchId\": \"{{branchId}}\",\n  \"role\": {\n    \"name\": \"WAITER\",\n    \"description\": \"Nhân viên phục vụ\"\n  },\n  \"status\": \"ACTIVE\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/staff",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"staff"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.24.0 (Ubuntu)"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 25 Mar 2026 10:44:07 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 1000,\n    \"result\": {\n        \"staffAccountId\": \"c73e4be7-2887-4a67-85f9-8f3045279b4a\",\n        \"role\": {\n            \"name\": \"WAITER\",\n            \"description\": \"Waiter responsible for serving customers\"\n        },\n        \"username\": \"staff_waiter_01\",\n        \"status\": \"ACTIVE\",\n        \"branchId\": \"25ca2150-d6dd-4176-83e2-039618899a6a\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "2. Get Staff Account By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/staff/{{staffAccountId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"{{staffAccountId}}"
+							]
+						},
+						"description": "Lấy thông tin chi tiết của 1 nhân viên thông qua ID."
+					},
+					"response": [
+						{
+							"name": "2. Get Staff Account By Id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/staff/{{staffAccountId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"staff",
+										"{{staffAccountId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.24.0 (Ubuntu)"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 25 Mar 2026 10:45:54 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 1000,\n    \"result\": {\n        \"staffAccountId\": \"c73e4be7-2887-4a67-85f9-8f3045279b4a\",\n        \"role\": {\n            \"name\": \"WAITER\",\n            \"description\": \"Waiter responsible for serving customers\"\n        },\n        \"username\": \"staff_waiter_01\",\n        \"status\": \"ACTIVE\",\n        \"branchId\": \"25ca2150-d6dd-4176-83e2-039618899a6a\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "3. Update Staff Account",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"{{staffAccountId}}\",\n  \"username\": \"staff_waiter_01_updated\",\n  \"branchId\": \"{{branchId}}\",\n  \"status\": \"ACTIVE\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/staff",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"staff"
+							]
+						},
+						"description": "Cập nhật các thông tin của nhân viên (không bao gồm đổi mật khẩu)."
+					},
+					"response": [
+						{
+							"name": "3. Update Staff Account",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"staffAccountId\": \"{{staffAccountId}}\",\n  \"role\": {\n            \"name\": \"WAITER\",\n            \"description\": \"Waiter responsible for serving customers\"\n        },\n  \"username\": \"staff_waiter_01_updated\",\n  \"branchId\": \"{{branchId}}\",   \n  \"status\": \"ACTIVE\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/staff",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"staff"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.24.0 (Ubuntu)"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 25 Mar 2026 10:56:41 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 1000,\n    \"result\": {\n        \"staffAccountId\": \"c73e4be7-2887-4a67-85f9-8f3045279b4a\",\n        \"role\": {\n            \"name\": \"WAITER\",\n            \"description\": \"Waiter responsible for serving customers\"\n        },\n        \"username\": \"staff_waiter_01_updated\",\n        \"status\": \"ACTIVE\",\n        \"branchId\": \"25ca2150-d6dd-4176-83e2-039618899a6a\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "4. Get Staff By Branch (Owner)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/staff/owner/paginated?branchId={{branchId}}&page=1&size=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"owner",
+								"paginated"
+							],
+							"query": [
+								{
+									"key": "branchId",
+									"value": "{{branchId}}",
+									"description": "Mã chi nhánh"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Số trang (1-indexed)"
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"description": "Số lượng bản ghi mỗi trang"
+								}
+							]
+						},
+						"description": "Dành cho Owner xem toàn bộ nhân viên bao gồm cả Manager của chi nhánh. Hỗ trợ phân trang và filter."
+					},
+					"response": [
+						{
+							"name": "4. Get Staff By Branch (Owner)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/staff/owner/paginated?branchId={{branchId}}&page=1&size=10",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"staff",
+										"owner",
+										"paginated"
+									],
+									"query": [
+										{
+											"key": "branchId",
+											"value": "{{branchId}}",
+											"description": "Mã chi nhánh"
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Số trang (1-indexed)"
+										},
+										{
+											"key": "size",
+											"value": "10",
+											"description": "Số lượng bản ghi mỗi trang"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.24.0 (Ubuntu)"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 25 Mar 2026 10:50:35 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 1000,\n    \"result\": {\n        \"content\": [\n            {\n                \"staffAccountId\": \"c73e4be7-2887-4a67-85f9-8f3045279b4a\",\n                \"role\": {\n                    \"name\": \"WAITER\",\n                    \"description\": \"Waiter responsible for serving customers\"\n                },\n                \"username\": \"staff_waiter_01\",\n                \"status\": \"ACTIVE\",\n                \"branchId\": \"25ca2150-d6dd-4176-83e2-039618899a6a\"\n            },\n            {\n                \"staffAccountId\": \"9d37c763-f5e8-44e5-aa0d-ba6b87084b26\",\n                \"role\": {\n                    \"name\": \"RECEPTIONIST\",\n                    \"description\": \"Receptionist handling reservations and guests\"\n                },\n                \"username\": \"pearl_receptionist\",\n                \"status\": \"ACTIVE\",\n                \"branchId\": \"25ca2150-d6dd-4176-83e2-039618899a6a\"\n            },\n            {\n                \"staffAccountId\": \"ee04933b-3554-4c58-8883-c470b56d6f60\",\n                \"role\": {\n                    \"name\": \"WAITER\",\n                    \"description\": \"Waiter responsible for serving customers\"\n                },\n                \"username\": \"pearl_waiter\",\n                \"status\": \"ACTIVE\",\n                \"branchId\": \"25ca2150-d6dd-4176-83e2-039618899a6a\"\n            },\n            {\n                \"staffAccountId\": \"d8f285ce-746e-4d7c-b0dc-591b37c83965\",\n                \"role\": {\n                    \"name\": \"BRANCH_MANAGER\",\n                    \"description\": \"Manager of a restaurant branch\"\n                },\n                \"username\": \"pearl_manager\",\n                \"status\": \"ACTIVE\",\n                \"branchId\": \"25ca2150-d6dd-4176-83e2-039618899a6a\"\n            }\n        ],\n        \"page\": 0,\n        \"size\": 0,\n        \"totalElements\": 4,\n        \"totalPages\": 1,\n        \"first\": false,\n        \"last\": false,\n        \"items\": [\n            {\n                \"staffAccountId\": \"c73e4be7-2887-4a67-85f9-8f3045279b4a\",\n                \"role\": {\n                    \"name\": \"WAITER\",\n                    \"description\": \"Waiter responsible for serving customers\"\n                },\n                \"username\": \"staff_waiter_01\",\n                \"status\": \"ACTIVE\",\n                \"branchId\": \"25ca2150-d6dd-4176-83e2-039618899a6a\"\n            },\n            {\n                \"staffAccountId\": \"9d37c763-f5e8-44e5-aa0d-ba6b87084b26\",\n                \"role\": {\n                    \"name\": \"RECEPTIONIST\",\n                    \"description\": \"Receptionist handling reservations and guests\"\n                },\n                \"username\": \"pearl_receptionist\",\n                \"status\": \"ACTIVE\",\n                \"branchId\": \"25ca2150-d6dd-4176-83e2-039618899a6a\"\n            },\n            {\n                \"staffAccountId\": \"ee04933b-3554-4c58-8883-c470b56d6f60\",\n                \"role\": {\n                    \"name\": \"WAITER\",\n                    \"description\": \"Waiter responsible for serving customers\"\n                },\n                \"username\": \"pearl_waiter\",\n                \"status\": \"ACTIVE\",\n                \"branchId\": \"25ca2150-d6dd-4176-83e2-039618899a6a\"\n            },\n            {\n                \"staffAccountId\": \"d8f285ce-746e-4d7c-b0dc-591b37c83965\",\n                \"role\": {\n                    \"name\": \"BRANCH_MANAGER\",\n                    \"description\": \"Manager of a restaurant branch\"\n                },\n                \"username\": \"pearl_manager\",\n                \"status\": \"ACTIVE\",\n                \"branchId\": \"25ca2150-d6dd-4176-83e2-039618899a6a\"\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "5. Disable / Soft Delete Staff Account",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/staff/{{staffAccountId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"{{staffAccountId}}"
+							]
+						},
+						"description": "Vô hiệu hóa (Soft delete) một tài khoản nhân viên thay vì xóa hẳn khỏi database."
+					},
+					"response": [
+						{
+							"name": "5. Disable / Soft Delete Staff Account",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/staff/{{staffAccountId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"staff",
+										"{{staffAccountId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.24.0 (Ubuntu)"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 25 Mar 2026 11:01:41 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 1000,\n    \"result\": {\n        \"staffAccountId\": \"c73e4be7-2887-4a67-85f9-8f3045279b4a\",\n        \"role\": {\n            \"name\": \"WAITER\",\n            \"description\": \"Waiter responsible for serving customers\"\n        },\n        \"username\": \"staff_waiter_01_updated\",\n        \"status\": \"INACTIVE\",\n        \"branchId\": \"25ca2150-d6dd-4176-83e2-039618899a6a\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "6. Reset Staff Password",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"newPassword\": \"NewSecurePassword456!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/staff/{{staffAccountId}}/password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"{{staffAccountId}}",
+								"password"
+							]
+						},
+						"description": "Cấp lại mật khẩu mới cho nhân viên. Dùng cho Owner/Manager."
+					},
+					"response": [
+						{
+							"name": "6. Reset Staff Password",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"newPassword\": \"NewSecurePassword456!\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/staff/{{staffAccountId}}/password",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"staff",
+										"{{staffAccountId}}",
+										"password"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.24.0 (Ubuntu)"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 25 Mar 2026 11:02:57 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 1000\n}"
+						}
+					]
+				},
+				{
+					"name": "7. Transfer Staff To Branch",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"newBranchId\": \"{{newBranchId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/staff/{{staffAccountId}}/transfer",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"{{staffAccountId}}",
+								"transfer"
+							]
+						},
+						"description": "Chuyển công tác nhân viên sang chi nhánh khác (Chỉ Owner mới có quyền này)."
+					},
+					"response": [
+						{
+							"name": "7. Transfer Staff To Branch",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"newBranchId\": \"{{newBranchId}}\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/staff/{{staffAccountId}}/transfer",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"staff",
+										"{{staffAccountId}}",
+										"transfer"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.24.0 (Ubuntu)"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 25 Mar 2026 11:06:01 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 1000,\n    \"result\": {\n        \"staffAccountId\": \"c73e4be7-2887-4a67-85f9-8f3045279b4a\",\n        \"role\": {\n            \"name\": \"WAITER\",\n            \"description\": \"Waiter responsible for serving customers\"\n        },\n        \"username\": \"staff_waiter_01_updated\",\n        \"status\": \"INACTIVE\",\n        \"branchId\": \"3147863d-1689-486b-880e-6c4d55d98507\"\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "Các API quản lý tài khoản nhân viên"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3YjdkMWIyNC1hNzA4LTQzNTUtYjczNi1jZTk0NDlmMjljNzMiLCJyb2xlIjoiUkVTVEFVUkFOVF9PV05FUiIsInNjb3BlIjoiUk9MRV9SRVNUQVVSQU5UX09XTkVSIiwiZXhwIjoxNzc0NDM3NzU0LCJpYXQiOjE3NzQ0MzQxNTQsImVtYWlsIjoidGFucGhvbmcwNzMwQGdtYWlsLmNvbSIsImp0aSI6IjZiZDYyODEzLTUyMGUtNGM4Ny1hNDZjLTRiNzEwMzIwN2Q4ZiJ9.0dvuVKgFYbLFA2Oz0Hd0AFxsS5DZiBhyh3BMIVRsgOo",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "restaurantId",
+			"value": "REPLACE_WITH_RESTAURANT_UUID"
+		},
+		{
+			"key": "branchId",
+			"value": "REPLACE_WITH_BRANCH_UUID"
+		},
+		{
+			"key": "promotionId",
+			"value": "REPLACE_WITH_PROMOTION_UUID"
+		},
+		{
+			"key": "staffAccountId",
+			"value": "REPLACE_WITH_STAFF_UUID"
+		},
+		{
+			"key": "newBranchId",
+			"value": "REPLACE_WITH_NEW_BRANCH_UUID"
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}

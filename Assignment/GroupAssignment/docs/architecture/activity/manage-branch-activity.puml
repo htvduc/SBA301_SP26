@@ -1,0 +1,53 @@
+@startuml Manage Branch - Activity Diagram
+
+|Restaurant Owner|
+start
+:Select restaurant;
+
+:Enter branch information\n(address, mail, phone);
+
+:Provide opening hours\n(opening time, closing time);
+
+:Submit create branch request;
+
+|System|
+:Validate required fields;
+
+:Validate opening hours;
+
+:Verify restaurant exists;
+
+if (Restaurant found?) then (no)
+  :Return error (restaurant not found);
+  stop
+else (yes)
+endif
+
+:Verify owner authorization;
+
+if (Owner authorized?) then (no)
+  :Return error (unauthorized);
+  stop
+else (yes)
+endif
+
+:Check branch limit\n(subscription plan);
+
+if (Branch limit reached?) then (yes)
+  :Return error (limit exceeded);
+  stop
+else (no)
+endif
+
+:Create branch entity;
+
+:Link branch to restaurant;
+
+:Store branch;
+
+:Return confirmation;
+
+|Restaurant Owner|
+stop
+
+@enduml

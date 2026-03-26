@@ -1,0 +1,56 @@
+@startuml Purchase Subscription - Sequence Diagram
+
+actor "Restaurant Owner" as Owner
+participant "RestaurantSubscriptionController" as Controller
+participant "RestaurantSubscriptionService" as Service
+participant "SubscriptionService" as SubscriptionSvc
+participant "PackageRepository" as PackageRepo
+participant "SubscriptionRepository" as SubscriptionRepo
+participant "SubscriptionPaymentRepository" as PaymentRepo
+database "Database" as DB
+
+== Purchase Subscription Request ==
+note right of Owner : Create restaurant with\nchosen package (first-time)
+Owner -> Controller : POST /api/restaurant-subscriptions/create\n(RestaurantCreateRequest, packageId)
+activate Controller
+
+Controller -> Service : createRestaurantWithSubscriptionAndPayment(request, packageId)
+activate Service
+
+Service -> Service : create restaurant\n(RestaurantService.createEntity)
+Service -> SubscriptionSvc : createEntitySubscription(restaurant, packageId)
+activate SubscriptionSvc
+SubscriptionSvc -> PackageRepo : findById(packageId)
+activate PackageRepo
+PackageRepo -> DB : SELECT package
+DB --> PackageRepo : Optional<Package>
+PackageRepo --> SubscriptionSvc : Package
+deactivate PackageRepo
+SubscriptionSvc -> SubscriptionRepo : save(subscription)
+activate SubscriptionRepo
+SubscriptionRepo -> DB : INSERT subscription
+DB --> SubscriptionRepo : Subscription
+SubscriptionRepo --> SubscriptionSvc : Subscription
+deactivate SubscriptionRepo
+SubscriptionSvc --> Service : Subscription
+deactivate SubscriptionSvc
+
+alt package not found\nor user not found\nor subscription error
+    Service --> Controller : throw AppException
+    Controller --> Owner : 4xx ApiResponse (error)
+else success
+    Service -> PaymentRepo : save(payment)
+    note right: SubscriptionPaymentService\ncreatePayment
+    activate PaymentRepo
+    PaymentRepo -> DB : INSERT subscription_payment
+    DB --> PaymentRepo : SubscriptionPayment
+    PaymentRepo --> Service
+    deactivate PaymentRepo
+
+    Service --> Controller : SubscriptionPaymentResponse
+    deactivate Service
+    Controller --> Owner : 200 ApiResponse<SubscriptionPaymentResponse>
+    deactivate Controller
+end
+
+@enduml

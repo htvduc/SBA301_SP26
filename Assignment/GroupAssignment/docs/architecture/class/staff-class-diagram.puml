@@ -1,0 +1,138 @@
+@startuml Staff Management Module - Class Diagram
+
+top to bottom direction
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam defaultFontSize 11
+skinparam classFontSize 12
+skinparam classFontStyle bold
+skinparam arrowColor #555555
+
+title Staff Management Module — Class Diagram
+
+' ============================================================
+' CONTROLLERS (top)
+' ============================================================
+class StaffAccountController {
+  + getStaffAccountById(staffAccountId : UUID) : StaffAccountDTO
+  + createStaffAccount(request : CreateStaffAccountRequest) : StaffAccountDTO
+  + updateStaffAccount(dto : StaffAccountDTO) : StaffAccountDTO
+  + setStaffAccountStatus(staffAccountId : UUID) : StaffAccountDTO
+  + getStaffByBranchForOwner(page, size, branchId) : PageResponse<StaffAccountDTO>
+  + getStaffByBranch(page, size, branchId) : PageResponse<StaffAccountDTO>
+  + getBranchStaffStatistic(branchId : UUID) : StaffStatisticDTO
+  + resetStaffPassword(staffAccountId : UUID, newPassword : String) : void
+}
+
+' ============================================================
+' REQUEST DTOs (middle-left)
+' ============================================================
+class CreateStaffAccountRequest {
+  - username : String
+  - password : String
+  - branchId : UUID
+  - role : RoleDTO
+  - status : EntityStatus
+}
+
+' ============================================================
+' RESPONSE DTOs (middle-right)
+' ============================================================
+class StaffAccountDTO {
+  - staffAccountId : UUID
+  - role : RoleDTO
+  - username : String
+  - status : EntityStatus
+  - branchId : UUID
+}
+
+class RoleDTO {
+  - name : RoleName
+  - description : String
+}
+
+' ============================================================
+' DOMAIN MODELS (bottom)
+' ============================================================
+class StaffAccount {
+  - staffAccountId : UUID
+  - username : String
+  - password : String
+  - status : EntityStatus
+  - createdAt : Instant
+  - updatedAt : Instant
+  - branch : Branch
+  - role : Role
+  - user : User
+}
+
+class Branch {
+  - branchId : UUID
+  - address : String
+  - isActive : boolean
+  - staffAccounts : Set<StaffAccount>
+  - manager : User
+  - restaurant : Restaurant
+}
+
+class User {
+  - userId : UUID
+  - email : String
+  - username : String
+}
+
+class Restaurant {
+  - restaurantId : UUID
+  - name : String
+  - user : User
+  - branches : Set<Branch>
+}
+
+class Role {
+  - roleId : UUID
+  - name : RoleName
+  - description : String
+}
+
+enum RoleName <<enum>> {
+  ADMIN
+  RESTAURANT_OWNER
+  BRANCH_MANAGER
+  WAITER
+  RECEPTIONIST
+}
+
+' ============================================================
+' Controller dependencies → Request DTOs
+' ============================================================
+StaffAccountController ..> CreateStaffAccountRequest
+
+' ============================================================
+' Controller dependencies → Response DTOs
+' ============================================================
+StaffAccountController ..> StaffAccountDTO
+
+' ============================================================
+' Response DTO composition / dependency
+' ============================================================
+StaffAccountDTO --> RoleDTO
+CreateStaffAccountRequest --> RoleDTO
+
+' ============================================================
+' Response → Model dependencies
+' ============================================================
+StaffAccountDTO ..> StaffAccount
+
+' ============================================================
+' Model associations with multiplicity
+' ============================================================
+User "1" --> "*" Restaurant
+Restaurant "1" --> "*" Branch
+Branch "1" --> "*" StaffAccount
+StaffAccount "*" --> "1" Role
+StaffAccount "1" --> "0..1" User
+Branch "*" --> "0..1" User
+Role --> RoleName
+
+@enduml

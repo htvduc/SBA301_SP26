@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Subscription Renewal Reminder - BentoX Platform</title>
+  <style>
+    /* Reset & Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f4f4f5;
+      color: #333333;
+      line-height: 1.6;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+      border: 1px solid #eaeaea;
+    }
+
+    /* Header đồng bộ thương hiệu BentoX */
+    .header {
+      background-color: #1a1a1a;
+      padding: 40px 30px;
+      text-align: center;
+      border-bottom: 3px solid #d4af37; /* Vàng đồng */
+    }
+
+    .logo-text {
+      font-family: 'Georgia', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: #d4af37;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .header-subtitle {
+      color: #aaaaaa;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    /* Content Area */
+    .content {
+      padding: 40px;
+    }
+
+    .greeting {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 16px;
+    }
+
+    .message {
+      font-size: 15px;
+      color: #555555;
+      margin-bottom: 24px;
+    }
+
+    /* Highlight Box cho ngày hết hạn */
+    .alert-box {
+      background-color: #fff9ea;
+      border-left: 4px solid #d4af37;
+      padding: 20px;
+      border-radius: 4px;
+      margin-bottom: 28px;
+    }
+
+    .alert-box p {
+      margin: 0;
+      font-size: 15px;
+      color: #4a3c10;
+    }
+
+    .highlight-text {
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    /* Feature List */
+    .feature-list {
+      background-color: #fafafa;
+      border: 1px solid #eeeeee;
+      border-radius: 6px;
+      padding: 24px 24px 24px 48px;
+      margin-bottom: 32px;
+    }
+
+    .feature-list p {
+      margin-left: -24px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #1a1a1a;
+    }
+
+    .feature-list ul {
+      margin: 0;
+      padding: 0;
+      color: #555555;
+      font-size: 15px;
+    }
+
+    .feature-list li {
+      margin-bottom: 8px;
+    }
+
+    /* Nút Call-to-action */
+    .btn-container {
+      text-align: center;
+      margin: 36px 0 24px 0;
+    }
+
+    .button {
+      display: inline-block;
+      background-color: #d4af37;
+      color: #1a1a1a !important;
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #c5a030;
+    }
+
+    .note {
+      font-size: 13px;
+      color: #888888;
+      text-align: center;
+      margin-top: 24px;
+      font-style: italic;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: #fafafa;
+      padding: 24px 40px;
+      text-align: center;
+      border-top: 1px solid #eeeeee;
+    }
+
+    .footer p {
+      font-size: 12px;
+      color: #888888;
+      margin: 4px 0;
+    }
+
+    /* Dark Mode */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #121212;
+        color: #e0e0e0;
+      }
+      .container {
+        background-color: #1e1e1e;
+        border-color: #333333;
+      }
+      .header {
+        background-color: #121212;
+      }
+      .greeting, .highlight-text, .feature-list p {
+        color: #ffffff;
+      }
+      .message {
+        color: #bbbbbb;
+      }
+      .alert-box {
+        background-color: #2a2415;
+        border-left-color: #d4af37;
+      }
+      .alert-box p {
+        color: #e8dcc3;
+      }
+      .feature-list {
+        background-color: #121212;
+        border-color: #333333;
+      }
+      .feature-list ul {
+        color: #bbbbbb;
+      }
+      .button {
+        background-color: #d4af37;
+        color: #1a1a1a !important;
+      }
+      .footer {
+        background-color: #1a1a1a;
+        border-top-color: #333333;
+      }
+    }
+
+    /* Mobile Responsive */
+    @media only screen and (max-width: 600px) {
+      body {
+        padding: 20px 10px;
+      }
+      .content {
+        padding: 30px 20px;
+      }
+      .feature-list {
+        padding: 20px 20px 20px 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1 class="logo-text">BENTOX</h1>
+      <div class="header-subtitle">Platform Management</div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <h2 class="greeting">Hello <span th:text="${name}">User</span>,</h2>
+      
+      <p class="message">
+        This is a quick reminder regarding your subscription on the BentoX Platform.
+      </p>
+
+      <!-- Alert Box thay cho chữ đỏ -->
+      <div class="alert-box">
+        <p>
+          Your <span class="highlight-text" th:text="${packageName}">Premium Plan</span> is scheduled to expire on <span class="highlight-text" th:text="${endDate}">November 25, 2025</span>.
+        </p>
+      </div>
+
+      <!-- Tính năng được chuyển thành dạng List để tăng tính thuyết phục -->
+      <div class="feature-list">
+        <p>Renew today to maintain uninterrupted access to:</p>
+        <ul>
+          <li>Advanced Business Analytics</li>
+          <li>Unlimited Branch Management</li>
+          <li>Priority Premium Support</li>
+        </ul>
+      </div>
+
+      <p class="message">
+        You can renew anytime by clicking the button below. If you renew early, your new period will automatically start after the current one ends without losing any days.
+      </p>
+
+      <!-- CTA Button -->
+      <div class="btn-container">
+        <a class="button" th:href="${renewLink}">Renew Subscription</a>
+      </div>
+
+      <p class="note">
+        If you have already renewed your subscription, please disregard this email.
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>&copy; <span th:text="${year}">2025</span> BentoX Platform. All rights reserved.</p>
+      <p>Thank you for growing your business with us.</p>
+    </div>
+  </div>
+</body>
+</html>

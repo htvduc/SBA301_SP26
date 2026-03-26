@@ -1,0 +1,57 @@
+@startuml Restaurant Setup - Component Communication
+title Restaurant / Branch / Area / Table: Owner thiết lập nhà hàng
+
+skinparam componentStyle rectangle
+top to bottom direction
+
+actor "Owner" as Owner
+
+package "API" {
+  [RestaurantController] as RestController
+  [BranchController] as BranchController
+  [AreaController] as AreaController
+  [AreaTableController] as TableController
+}
+
+package "Services" {
+  [RestaurantService] as RestaurantSvc
+  [BranchService] as BranchSvc
+  [AreaService] as AreaSvc
+  [AreaTableService] as TableSvc
+  [QrCodeService] as QrSvc
+}
+
+package "Persistence" {
+  [RestaurantRepository] as RestRepo
+  [BranchRepository] as BranchRepo
+  [AreaRepository] as AreaRepo
+  [AreaTableRepository] as TableRepo
+}
+
+Owner --> RestController : create\nupdate\nget
+Owner --> BranchController : create\nupdate\ngetByRestaurant
+Owner --> AreaController : create\nupdate\ngetByBranch
+Owner --> TableController : create\nupdate\nsetStatus\nmarkOutOfOrder\nmarkAvailable\nmarkOccupied
+
+RestController --> RestaurantSvc : create\nupdate\nfindById
+RestaurantSvc --> RestRepo : save\nfindById
+
+BranchController --> BranchSvc : create\nupdate\ngetByRestaurantId
+BranchSvc --> RestaurantSvc : findById
+BranchSvc --> BranchRepo : save\nfindByRestaurant
+
+AreaController --> AreaSvc : create\nupdate\ngetByBranchId
+AreaSvc --> BranchSvc : findById
+AreaSvc --> AreaRepo : save\nfindByBranch
+
+TableController --> TableSvc : create\nupdate\nsetStatus\nmarkOutOfOrder\nmarkAvailable\nmarkOccupied
+TableSvc --> AreaSvc : findById
+TableSvc --> TableRepo : save\nfindByArea
+TableSvc --> QrSvc : generateTableQrCode
+
+note bottom of TableSvc
+  Table: FREE, OCCUPIED, INACTIVE, ACTIVE.
+  Chỉ Branch Manager tạo/sửa bàn (checkBranchManagerAccess).
+end note
+
+@enduml

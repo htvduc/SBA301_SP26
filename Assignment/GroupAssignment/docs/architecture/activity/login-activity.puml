@@ -1,0 +1,41 @@
+@startuml Login - Activity Diagram
+
+|User|
+start
+:Enter email, password;
+
+:Submit login;
+
+|System|
+:Validate login data;
+
+:Find user by email;
+
+if (User found?) then (no)
+  :Return error (invalid credentials);
+  stop
+else (yes)
+endif
+
+:Verify password;
+
+if (Password correct?) then (no)
+  :Return error (invalid credentials);
+  stop
+else (yes)
+endif
+
+if (User active?) then (no)
+  :Return error (user inactive);
+  stop
+else (yes)
+endif
+
+:Generate access token & refresh token;
+
+:Return auth response;
+
+|User|
+stop
+
+@enduml

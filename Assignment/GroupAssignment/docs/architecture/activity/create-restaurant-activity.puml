@@ -1,0 +1,47 @@
+@startuml Create Restaurant - Activity Diagram
+
+|Restaurant Owner|
+start
+:Enter restaurant information;
+
+:Provide contact details\n(email, phone);
+
+:Provide optional assets\n(e.g. logo);
+
+:Submit create request;
+
+|System|
+:Validate required fields;
+
+:Validate contact information;
+
+:Check restaurant name\nduplication;
+
+if (Restaurant name\nalready exists?) then (yes)
+  :Return error;
+  stop
+else (no)
+endif
+
+:Verify owner account;
+
+if (Owner account valid?) then (no)
+  :Return error (owner not found);
+  stop
+else (yes)
+endif
+
+:Create restaurant entity;
+
+:Link restaurant to owner;
+
+:Store restaurant;
+
+:Generate restaurant identifier;
+
+:Return confirmation;
+
+|Restaurant Owner|
+stop
+
+@enduml

@@ -1,0 +1,74 @@
+@startuml User Registration - Sequence Diagram
+
+actor Client
+participant "UserController" as Controller
+participant "UserService" as Service
+participant "UserMapper" as Mapper
+participant "UserRepository" as UserRepo
+participant "RoleRepository" as RoleRepo
+participant "PasswordEncoder" as Encoder
+database "Database" as DB
+
+== Registration Request ==
+Client -> Controller : POST /api/users/signup\n(SignupRequest: email, password, username)
+activate Controller
+
+Controller -> Controller : @Valid SignupRequest\n(email, password, username validation)
+note right: Bean Validation\n@Email, @Password, @Size(5..25)
+
+Controller -> Service : signUp(signupRequest)
+activate Service
+
+Service -> UserRepo : findByEmail(email)
+activate UserRepo
+UserRepo -> DB : SELECT by email
+DB --> UserRepo : result
+UserRepo --> Service : Optional<User>
+deactivate UserRepo
+
+alt email already exists
+    Service --> Controller : throw AppException(EMAIL_EXISTED)
+    Controller --> Client : 4xx ApiResponse (error)
+else email available
+    Service -> Mapper : signUp(signupRequest)
+    activate Mapper
+    Mapper --> Service : User (entity, plain)
+    deactivate Mapper
+
+    Service -> Encoder : encode(password)
+    activate Encoder
+    Encoder --> Service : encoded password
+    deactivate Encoder
+
+    Service -> Service : setPassword(encoded)\nsetStatus(ACTIVE)
+
+    Service -> RoleRepo : findByName(RESTAURANT_OWNER)
+    activate RoleRepo
+    RoleRepo -> DB : SELECT role by name
+    DB --> RoleRepo : Role
+    RoleRepo --> Service : Optional<Role>
+    deactivate RoleRepo
+
+    Service -> Service : setRole(ownerRole)
+
+    Service -> UserRepo : save(newUser)
+    activate UserRepo
+    UserRepo -> DB : INSERT user
+    DB --> UserRepo : saved User
+    UserRepo --> Service : User
+    deactivate UserRepo
+
+    Service -> Mapper : toUserDto(savedUser)
+    activate Mapper
+    Mapper --> Service : UserDTO
+    deactivate Mapper
+
+    Service --> Controller : UserDTO
+    deactivate Service
+
+    Controller -> Controller : ApiResponse.setResult(userDTO)
+    Controller --> Client : 200 ApiResponse<UserDTO>
+    deactivate Controller
+end
+
+@enduml

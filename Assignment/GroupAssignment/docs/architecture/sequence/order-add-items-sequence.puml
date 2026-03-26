@@ -1,0 +1,81 @@
+@startuml Add Order Item - Sequence Diagram
+
+actor "Waiter" as Waiter
+participant "WaiterOrderController" as Controller
+participant "OrderService" as Service
+participant "OrderRepository" as OrderRepo
+participant "OrderLineRepository" as LineRepo
+participant "OrderItemRepository" as ItemRepo
+participant "MenuItemRepository" as MenuRepo
+database "Database" as DB
+
+== Add Order Item Request ==
+Waiter -> Controller : POST /api/waiter/orders/{orderId}/items\n(AddItemsToOrderRequest: items)
+activate Controller
+
+Controller -> Service : addItemsToOrder(orderId, request)
+activate Service
+
+Service -> OrderRepo : findById(orderId)
+activate OrderRepo
+OrderRepo -> DB : SELECT order by id
+DB --> OrderRepo : Optional<Order>
+OrderRepo --> Service : Optional<Order>
+deactivate OrderRepo
+
+alt order not found\nor order already completed\nor menu item not found
+    Service --> Controller : throw AppException
+    Controller --> Waiter : 4xx ApiResponse (error)
+else success
+    Service -> LineRepo : save(OrderLine)
+    activate LineRepo
+    LineRepo -> DB : INSERT order_line
+    DB --> LineRepo : OrderLine
+    LineRepo --> Service : OrderLine
+    deactivate LineRepo
+
+    Service -> MenuRepo : findById (per item)
+    activate MenuRepo
+    MenuRepo -> DB : SELECT menu_item
+    DB --> MenuRepo : MenuItem
+    MenuRepo --> Service
+    deactivate MenuRepo
+
+    Service -> ItemRepo : save(OrderItems)
+    activate ItemRepo
+    ItemRepo -> DB : INSERT order_item
+    DB --> ItemRepo
+    ItemRepo --> Service
+    deactivate ItemRepo
+
+    Service -> LineRepo : save(orderLine totals)
+    Service -> MenuRepo : findById (per item)
+    activate MenuRepo
+    MenuRepo -> DB : SELECT menu_item
+    DB --> MenuRepo : MenuItem
+    MenuRepo --> Service
+    deactivate MenuRepo
+
+    Service -> ItemRepo : save(OrderItems)
+    activate ItemRepo
+    ItemRepo -> DB : INSERT order_item
+    DB --> ItemRepo
+    ItemRepo --> Service
+    deactivate ItemRepo
+
+    Service -> LineRepo : save(orderLine totals)
+    Service -> OrderRepo : save(order totals)
+    activate OrderRepo
+    OrderRepo -> DB : UPDATE order
+    DB --> OrderRepo : Order
+    OrderRepo --> Service : Order
+    deactivate OrderRepo
+
+    Service --> Controller : OrderDTO
+    deactivate Service
+
+    Controller --> Waiter : 200 ApiResponse<OrderDTO>
+    deactivate Controller
+end
+
+@enduml

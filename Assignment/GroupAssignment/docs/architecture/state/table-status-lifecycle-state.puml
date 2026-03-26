@@ -1,0 +1,45 @@
+@startuml Table Status Lifecycle - State Diagram
+title Table Status Lifecycle (TableStatus)
+
+skinparam state {
+  BackgroundColor White
+  BorderColor #333333
+}
+
+state "FREE" as FREE
+state "OCCUPIED" as OCCUPIED
+state "INACTIVE" as INACTIVE
+
+[*] --> FREE : createTable
+
+FREE --> OCCUPIED : order
+
+OCCUPIED --> FREE : settle
+
+FREE --> INACTIVE : outOfOrder
+
+OCCUPIED --> INACTIVE : outOfOrder
+
+INACTIVE --> FREE : available
+
+INACTIVE --> OCCUPIED : occupied
+
+note bottom of FREE
+  **order** = createOrder (first order)
+  or markOccupied
+  ----
+  **settle** = confirmPayment,
+  cancelOrder, or markAvailable
+  ----
+  **outOfOrder** = markOutOfOrder
+  **available** = markAvailable
+  **occupied** = markOccupied
+end note
+
+note right of INACTIVE
+  **ACTIVE** (enum): chỉ gán qua
+  setStatus(ACTIVE). Có thể chuyển
+  từ/ sang FREE, OCCUPIED, INACTIVE.
+end note
+
+@enduml

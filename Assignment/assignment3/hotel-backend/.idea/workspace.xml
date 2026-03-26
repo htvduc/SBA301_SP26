@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="43267eea-0f1b-431d-8d33-9213db89568a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/A3HoangaTongVietDucSe18D04Application.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/config/JwtAuthenticationFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/config/SecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/config/StaffProperties.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/controller/AuthController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/controller/CustomerController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/controller/RoomController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/controller/StaffBookingController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/controller/StaffCustomerController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/controller/StaffRoomController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/dto/BookingDetailRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/dto/CreateBookingRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/dto/LoginRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/dto/RegisterRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/dto/UpdateBookingStatusRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/entity/BookingDetail.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/entity/BookingDetailId.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/entity/BookingReservation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/entity/Customer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/entity/RoomInformation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/entity/RoomType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/repository/BookingDetailRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/repository/BookingReservationRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/repository/CustomerRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/repository/RoomInformationRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/repository/RoomTypeRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/service/CustomerService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/service/CustomerServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/service/JwtService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/service/RoomService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fpt/sba301/service/RoomServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/fpt/sba301/A3HoangaTongVietDucSe18D04ApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/eslint.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/public/vite.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/App.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/App.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/api/authApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/api/axiosClient.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/api/customerApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/api/roomApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/api/staffApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/assets/react.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/components/LoadingSpinner.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/components/Navbar.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/components/RoomCard.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/components/RoomList.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/contexts/AuthContext.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/contexts/useAuth.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/main.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/pages/CustomerBookingsPage.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/pages/CustomerNewBookingPage.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/pages/CustomerProfilePage.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/pages/HomePage.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/pages/LoginPage.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/pages/RegisterPage.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/pages/StaffBookingsPage.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/pages/StaffCustomersPage.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/pages/StaffDashboardPage.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/pages/StaffRoomsPage.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/routes/ProtectedRoute.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/src/styles/global.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hotel-frontend/vite.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Labs/Assigment2/src/main/java/com/example/Assigment2/pojos/SystemAccount.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Labs/lab2-New/src/hooks/useLogin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Labs/lab2-New/src/hooks/useLogin.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Labs/lab2-New/src/pages/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Labs/lab2-New/src/pages/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Labs/lab2-New/src/stores/AuthContext.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Labs/lab2-New/src/stores/AuthContext.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Labs/lab2/src/components/MainLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Labs/lab2/src/components/MainLayout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Labs/lab3/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Labs/lab3/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Labs/lab3/src/components/ListOrchid.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Labs/lab3/src/components/ListOrchid.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Labs/lab3/src/components/OrchidForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Labs/lab3/src/components/OrchidForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Labs/lab3/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Labs/lab3/src/main.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../slot4/ex2/src/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../slot4/ex2/src/components/Header.jsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="3ABYmaVHCyDDVQLQeRJ73uMGHI1" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.A3HoangaTongVietDucSe18D04Application.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/hoang/OneDrive/Desktop/FPT/assignment3/sba301"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="hotel-backend" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="hotel-backend" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="43267eea-0f1b-431d-8d33-9213db89568a" name="Changes" comment="" />
+      <created>1772067590408</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1772067590408</updated>
+    </task>
+    <servers />
+  </component>
+</project>

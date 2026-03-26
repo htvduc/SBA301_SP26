@@ -1,0 +1,56 @@
+@startuml Add Menu Item - Activity Diagram
+
+|Restaurant Owner|
+start
+:Enter item name, description, price;
+
+:Select category;
+
+if (Add customizations?) then (yes)
+  :Select customization(s);
+else (no)
+endif
+
+:Upload image (optional);
+
+:Submit add menu item request;
+
+|System|
+:Validate required fields;
+
+:Verify restaurant exists;
+
+if (Restaurant found?) then (no)
+  :Return error (restaurant not found);
+  stop
+else (yes)
+endif
+
+:Check menu item limit\n(subscription plan);
+
+if (Limit reached?) then (yes)
+  :Return error (limit exceeded);
+  stop
+else (no)
+endif
+
+:Verify category exists;
+
+if (Category found?) then (no)
+  :Return error (category not found);
+  stop
+else (yes)
+endif
+
+:Create menu item;
+
+:Link item to category and restaurant;
+
+:Store menu item;
+
+:Return confirmation;
+
+|Restaurant Owner|
+stop
+
+@enduml

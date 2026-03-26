@@ -1,0 +1,38 @@
+@startuml Staff Management - Component Communication
+title Staff Management: Create / Update / List / Toggle Status
+
+skinparam componentStyle rectangle
+top to bottom direction
+
+actor "Owner" as Owner
+
+package "API" {
+  [StaffAccountController] as StaffController
+}
+
+package "Services" {
+  [StaffAccountService] as StaffSvc
+  [BranchService] as BranchSvc
+}
+
+package "Persistence" {
+  [StaffAccountRepository] as StaffRepo
+  [BranchRepository] as BranchRepo
+  [UserRepository] as UserRepo
+}
+
+Owner --> StaffController : createStaffAccount\nupdateStaffAccount\ngetStaffAccountById\nsetStaffAccountStatus\ngetStaffByBranchPaginated
+
+StaffController --> StaffSvc : createStaffAccount(request)\nupdateStaffAccount(dto)\ngetStaffAccountById(id)\nsetStaffAccountStatus(id)\ngetStaffAccountByBranchPaginated(page, size, branchId)
+
+StaffSvc --> BranchSvc : findById(branchId)
+StaffSvc --> StaffRepo : save\nfindById\nfindByBranch
+StaffSvc --> UserRepo : findById (if linked user)
+
+note bottom of StaffSvc
+  createStaffAccount: assign branch, role (BRANCH_MANAGER / STAFF).
+  setStaffAccountStatus: toggle ACTIVE ↔ INACTIVE.
+  Assign branch manager: via Branch or Staff API.
+end note
+
+@enduml

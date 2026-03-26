@@ -1,0 +1,47 @@
+@startuml Subscription Flow - Component Communication
+title Subscription / Payment: Controller – Service (communication)
+
+skinparam componentStyle rectangle
+top to bottom direction
+
+' === Luồng Owner: đăng ký / gia hạn / nâng cấp ===
+actor "Owner" as Owner
+
+package "API" {
+  [RestaurantSubscriptionController] as SubController
+  [SubscriptionPaymentController] as PayController
+}
+
+package "Services" {
+  [RestaurantSubscriptionService] as SubSvc
+  [RestaurantService] as RestaurantSvc
+  [SubscriptionService] as SubscriptionSvc
+  [SubscriptionPaymentService] as PaySvc
+}
+
+package "External" {
+  [PayOS] as PayOS
+}
+
+' Owner → API
+Owner --> SubController : create / renew / upgrade
+Owner --> PayController : getStatus\ncancelPayment
+
+' Subscription API → Services (theo thứ tự gọi)
+SubController --> SubSvc : createRestaurantWithSubscription\nrenewSubscription\nupgradePackage
+SubSvc --> RestaurantSvc : createEntity
+SubSvc --> SubscriptionSvc : createEntitySubscription
+SubSvc --> PaySvc : createPayment
+
+' PayOS ↔ Payment API / Service
+PayOS --> PayController : webhook (payment result)
+PayController --> PaySvc : handlePaymentWebhook
+PaySvc --> SubscriptionSvc : update subscription ACTIVE
+PaySvc --> PayOS : createVQRPayment (link)
+
+note bottom of PaySvc
+  Payment: PENDING → SUCCESS / FAILED / CANCELED.
+  Subscription: PENDING_PAYMENT → ACTIVE (webhook) or CANCELED.
+end note
+
+@enduml

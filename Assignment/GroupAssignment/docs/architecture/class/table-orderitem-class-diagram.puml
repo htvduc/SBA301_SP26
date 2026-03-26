@@ -1,0 +1,115 @@
+@startuml Table / OrderItem Module - Class Diagram
+
+top to bottom direction
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam defaultFontSize 11
+skinparam classFontSize 12
+skinparam classFontStyle bold
+skinparam arrowColor #555555
+
+title Table / OrderItem Module — Class Diagram
+
+' ============================================================
+' CONTROLLERS (top)
+' ============================================================
+class TableController {
+  + getAll() : List<TableDTO>
+  + getById(id : UUID) : TableDTO
+  + create(dto : TableDTO) : TableDTO
+  + update(id : UUID, dto : TableDTO) : TableDTO
+  + delete(id : UUID) : void
+  + getTablesByBranch(branchId : UUID) : List<TableDTO>
+}
+
+class OrderItemController {
+  + getItemsByOrder(orderId : UUID) : List<OrderItemDTO>
+  + addItem(request) : OrderItemDTO
+  + updateItem(id : UUID, dto : OrderItemDTO) : OrderItemDTO
+  + removeItem(id : UUID) : void
+}
+
+' ============================================================
+' DTOs (middle)
+' ============================================================
+class TableDTO {
+  - tableId : UUID
+  - branchId : UUID
+  - tableNumber : String
+  - capacity : int
+  - status : TableStatus
+}
+
+class OrderItemDTO {
+  - orderItemId : UUID
+  - orderId : UUID
+  - menuItemId : UUID
+  - quantity : int
+  - price : BigDecimal
+  - subtotal : BigDecimal
+}
+
+' ============================================================
+' DOMAIN MODELS (bottom)
+' ============================================================
+class Table {
+  - tableId : UUID
+  - tableNumber : String
+  - capacity : int
+  - status : TableStatus
+  - branch : Branch
+}
+
+class OrderItem {
+  - orderItemId : UUID
+  - quantity : int
+  - price : BigDecimal
+  - order : Order
+  - menuItem : MenuItem
+}
+
+class Order {
+  - orderId : UUID
+  - orderItems : Set<OrderItem>
+}
+
+class MenuItem {
+  - menuItemId : UUID
+  - name : String
+  - price : BigDecimal
+}
+
+class Branch {
+  - branchId : UUID
+  - address : String
+  - tables : Set<Table>
+}
+
+enum TableStatus <<enum>> {
+  AVAILABLE
+  OCCUPIED
+  RESERVED
+}
+
+' ============================================================
+' Controller dependencies → DTOs
+' ============================================================
+TableController ..> TableDTO
+OrderItemController ..> OrderItemDTO
+
+' ============================================================
+' DTO dependencies → Domain Models
+' ============================================================
+TableDTO ..> Table
+OrderItemDTO ..> OrderItem
+
+' ============================================================
+' Model associations with multiplicity
+' ============================================================
+Branch "1" --> "*" Table
+Order "1" --> "*" OrderItem
+MenuItem "1" --> "*" OrderItem
+Table --> TableStatus
+
+@enduml

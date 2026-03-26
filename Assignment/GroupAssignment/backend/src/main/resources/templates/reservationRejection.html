@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Reservation Update</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #f5f0e8;
+            font-family: 'DM Sans', sans-serif;
+            color: #1a1209;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .wrapper {
+            max-width: 620px;
+            margin: 40px auto;
+            background: #fffdf8;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 4px 40px rgba(0,0,0,0.08);
+        }
+
+        .header {
+            background: #1a1209;
+            padding: 48px 48px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 220px; height: 220px;
+            border-radius: 50%;
+            border: 1px solid rgba(212,167,90,0.15);
+        }
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -80px; left: -40px;
+            width: 280px; height: 280px;
+            border-radius: 50%;
+            border: 1px solid rgba(212,167,90,0.10);
+        }
+        .brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #d4a75a;
+            letter-spacing: 2px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .brand-sub {
+            font-size: 11px;
+            font-weight: 300;
+            color: rgba(212,167,90,0.6);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+        .header-divider {
+            width: 40px;
+            height: 1px;
+            background: #d4a75a;
+            margin: 20px 0;
+        }
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 500;
+            color: #fffdf8;
+            line-height: 1.4;
+        }
+
+        .greeting {
+            padding: 36px 48px 0;
+        }
+        .greeting-text {
+            font-size: 15px;
+            color: #4a3f2e;
+            line-height: 1.7;
+        }
+        .greeting-name {
+            font-weight: 500;
+            color: #1a1209;
+        }
+
+        .status-wrap {
+            padding: 24px 48px 0;
+        }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #ffebee;
+            border: 1px solid #ef9a9a;
+            border-radius: 2px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #c62828;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .status-dot {
+            width: 7px; height: 7px;
+            background: #f44336;
+            border-radius: 50%;
+        }
+
+        .card {
+            margin: 28px 48px 0;
+            border: 1px solid #e8dfc8;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .card-header {
+            background: #f5f0e8;
+            padding: 12px 20px;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #8a7558;
+        }
+        .card-body {
+            padding: 4px 0;
+        }
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            padding: 14px 20px;
+            border-bottom: 1px solid #f0e8d8;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-icon {
+            width: 32px;
+            height: 32px;
+            background: #f5f0e8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-right: 14px;
+            margin-top: 1px;
+        }
+        .info-icon svg {
+            width: 14px; height: 14px;
+            stroke: #b07d20;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .info-label {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #8a7558;
+            margin-bottom: 3px;
+        }
+        .info-value {
+            font-size: 14px;
+            font-weight: 400;
+            color: #1a1209;
+            line-height: 1.4;
+        }
+        .info-value strong {
+            font-weight: 500;
+        }
+
+        .reason-section {
+            margin: 20px 48px 0;
+            background: #fff3e0;
+            border-left: 3px solid #ff9800;
+            border-radius: 0 4px 4px 0;
+            padding: 16px 20px;
+        }
+        .reason-label {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #e65100;
+            margin-bottom: 6px;
+        }
+        .reason-text {
+            font-size: 14px;
+            color: #4a3f2e;
+            line-height: 1.6;
+        }
+
+        .contact-section {
+            margin: 28px 48px 0;
+            padding: 20px;
+            background: #fafaf8;
+            border: 1px solid #e8dfc8;
+            border-radius: 4px;
+        }
+        .contact-title {
+            font-size: 12px;
+            font-weight: 500;
+            color: #1a1209;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+        .contact-list {
+            list-style: none;
+            padding: 0;
+        }
+        .contact-list li {
+            font-size: 13px;
+            color: #6a5c45;
+            padding: 4px 0 4px 18px;
+            position: relative;
+            line-height: 1.5;
+        }
+        .contact-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #d4a75a;
+        }
+
+        .footer {
+            margin-top: 36px;
+            padding: 28px 48px;
+            background: #1a1209;
+            text-align: center;
+        }
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            color: #d4a75a;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+        }
+        .footer-text {
+            font-size: 12px;
+            color: rgba(245,240,232,0.45);
+            line-height: 1.7;
+        }
+        .footer-divider {
+            width: 30px;
+            height: 1px;
+            background: rgba(212,167,90,0.3);
+            margin: 14px auto;
+        }
+        .footer-year {
+            font-size: 11px;
+            color: rgba(245,240,232,0.25);
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 640px) {
+            .wrapper { margin: 0; border-radius: 0; }
+            .header, .greeting, .status-wrap, .card, .reason-section, .contact-section { padding-left: 24px; padding-right: 24px; }
+            .card { margin-left: 24px; margin-right: 24px; }
+            .reason-section { margin-left: 24px; margin-right: 24px; }
+            .contact-section { margin-left: 24px; margin-right: 24px; }
+            .footer { padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+
+    <div class="header">
+        <span class="brand" th:text="${restaurantName}">BentoX</span>
+        <span class="brand-sub">Restaurant Management</span>
+        <div class="header-divider"></div>
+        <div class="header-title">Reservation Update</div>
+    </div>
+
+    <div class="greeting">
+        <p class="greeting-text">
+            Dear <span class="greeting-name" th:text="${customerName}">Customer</span>,<br/><br/>
+            Thank you for your interest in <strong th:text="${restaurantName}">BentoX</strong>. We regret to inform you that we are unable to accommodate your reservation request at this time.
+        </p>
+    </div>
+
+    <div class="status-wrap">
+        <div class="status-badge">
+            <div class="status-dot"></div>
+            <span>Unable to Accommodate</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Reservation Information</div>
+        <div class="card-body">
+
+            <div class="info-row">
+                <div class="info-icon">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+                <div>
+                    <div class="info-label">Reservation ID</div>
+                    <div class="info-value"><strong th:text="${reservationId}">ABC-123</strong></div>
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-icon">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+                </div>
+                <div>
+                    <div class="info-label">Requested Time</div>
+                    <div class="info-value">
+                        <strong th:text="${#temporals.format(startTime, 'HH:mm')}">19:00</strong>
+                        &nbsp;–&nbsp;
+                        <span th:text="${#temporals.format(startTime, 'dd/MM/yyyy')}">01/01/2024</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="reason-section" th:if="${reason != null and !#strings.isEmpty(reason)}">
+        <div class="reason-label">Reason</div>
+        <p class="reason-text" th:text="${reason}">The restaurant is fully booked during this time slot.</p>
+    </div>
+
+    <div class="contact-section">
+        <div class="contact-title">We're Here to Help</div>
+        <ul class="contact-list">
+            <li>Please contact us directly to find an alternative time that works better</li>
+            <li th:if="${branchPhone != null}">Phone: <strong th:text="${branchPhone}">0901 234 567</strong></li>
+            <li th:if="${branchEmail != null}">Email: <strong th:text="${branchEmail}">branch@bentox.com</strong></li>
+            <li>You can also try booking a different time through our system</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        <div class="footer-brand" th:text="${restaurantName}">BentoX</div>
+        <div class="footer-divider"></div>
+        <div class="footer-text">
+            We look forward to serving you in the future.<br/>
+            Thank you for your understanding.
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-year" th:text="'© ' + ${#dates.year(#dates.createNow())} + ' ' + ${restaurantName} + '. All rights reserved.'">© 2024 BentoX. All rights reserved.</div>
+    </div>
+
+</div>
+</body>
+</html>

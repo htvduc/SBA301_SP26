@@ -1,0 +1,25 @@
+@startuml Order Lifecycle - State Diagram
+title Order Lifecycle (OrderStatus)
+
+skinparam linetype ortho
+
+skinparam state {
+  BackgroundColor White
+  BorderColor #333333
+}
+
+state "EATING" as EATING
+state "COMPLETED" as COMPLETED
+state "CANCELLED" as CANCELLED
+
+[*] --> EATING : placeOrder
+
+EATING --> COMPLETED : confirmPayment
+
+EATING --> CANCELLED : cancelOrder
+
+COMPLETED --> [*]
+
+CANCELLED --> [*]
+
+@enduml

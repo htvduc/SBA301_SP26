@@ -1,0 +1,53 @@
+@startuml Create Restaurant - Sequence Diagram
+
+actor "Restaurant Owner" as Owner
+participant "RestaurantController" as Controller
+participant "RestaurantService" as Service
+participant "UserRepository" as UserRepo
+participant "RestaurantRepository" as RestaurantRepo
+participant "RestaurantMapper" as Mapper
+database "Database" as DB
+
+== Create Restaurant Request ==
+Owner -> Controller : POST /api/restaurants\n(RestaurantCreateRequest:\nuserId, name, email, restaurantPhone,\npublicUrl, description)
+activate Controller
+
+Controller -> Service : create(request)
+activate Service
+
+Service -> UserRepo : findById(request.getUserId())
+activate UserRepo
+UserRepo -> DB : SELECT user by id
+DB --> UserRepo : Optional<User>
+UserRepo --> Service : Optional<User>
+deactivate UserRepo
+
+alt owner not found (empty)
+    Service --> Controller : throw AppException(USER_NOT_FOUND)
+    Controller --> Owner : 4xx ApiResponse (error)
+else owner found
+    Service -> Service : new Restaurant()\nsetUser(owner)\nsetName, setEmail, setRestaurantPhone\nsetDescription, setStatus(false)
+    note right: Build publicUrl from\nwebUrl config + slug from name
+
+    Service -> RestaurantRepo : save(restaurant)
+    activate RestaurantRepo
+    RestaurantRepo -> DB : INSERT restaurant
+    DB --> RestaurantRepo : Restaurant
+    RestaurantRepo --> Service : Restaurant
+    deactivate RestaurantRepo
+
+    Service -> Mapper : toRestaurantDto(restaurant)
+    activate Mapper
+    Mapper --> Service : RestaurantDTO
+    deactivate Mapper
+
+    Service --> Controller : RestaurantDTO
+    deactivate Service
+
+    Controller -> Controller : ApiResponse.setResult(restaurantDTO)
+
+    Controller --> Owner : 200 ApiResponse<RestaurantDTO>
+    deactivate Controller
+end
+
+@enduml

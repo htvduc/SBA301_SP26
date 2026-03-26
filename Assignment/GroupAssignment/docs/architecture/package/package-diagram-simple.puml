@@ -1,0 +1,95 @@
+@startuml Restaurant Management System - Simplified Package Diagram
+
+left to right direction
+
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam defaultFontSize 12
+skinparam packageFontSize 14
+skinparam packageFontStyle bold
+skinparam arrowColor #555555
+skinparam packageBorderColor #888888
+
+title Restaurant Management System — High-Level Architecture
+
+' ============================================================
+' FRONTEND (left side)
+' ============================================================
+package "Frontend (React + Vite + TypeScript)" as FE #E8F5E9 {
+
+  package "Pages & Routes" as FE_Pages #C8E6C9
+
+  package "Components & Layouts" as FE_Components #C8E6C9
+
+  package "Hooks (React Query)" as FE_Hooks #C8E6C9
+
+  package "API Services\n(Axios)" as FE_API #C8E6C9
+
+  package "State Management\n(Zustand)" as FE_Stores #C8E6C9
+
+  package "Types / DTOs" as FE_Types #C8E6C9
+}
+
+' ============================================================
+' BACKEND (right side)
+' ============================================================
+package "Backend (Spring Boot)" as BE #E3F2FD {
+
+  package "Security & Config" as BE_Security #BBDEFB
+
+  package "Controller\n(REST API)" as BE_Controller #BBDEFB
+
+  package "DTO & Mapper" as BE_DTO #BBDEFB
+
+  package "Service\n(Business Logic)" as BE_Service #BBDEFB
+
+  package "Repository\n(Spring Data JPA)" as BE_Repository #BBDEFB
+
+  package "Entity\n(JPA Domain Model)" as BE_Entity #BBDEFB
+
+  package "Exception Handling" as BE_Exception #BBDEFB
+}
+
+' ============================================================
+' FRONTEND — dependencies
+' ============================================================
+FE_Pages --> FE_Components
+FE_Pages --> FE_Hooks
+FE_Pages --> FE_Stores
+FE_Pages ..> FE_Types
+
+FE_Components --> FE_Hooks
+FE_Components --> FE_Stores
+
+FE_Hooks --> FE_API
+FE_API --> FE_Stores : reads auth token
+
+' FE_Types is shared across layers
+FE_Components ..> FE_Types
+FE_Hooks ..> FE_Types
+FE_API ..> FE_Types
+
+' ============================================================
+' BACKEND — dependencies
+' ============================================================
+BE_Controller --> BE_Service
+BE_Controller --> BE_DTO
+
+BE_Service --> BE_Repository
+BE_Service --> BE_DTO
+BE_Service --> BE_DTO : uses Mapper
+BE_Service --> BE_Exception
+
+BE_Repository --> BE_Entity
+BE_DTO --> BE_Entity
+
+' Cross-cutting concerns
+BE_Security ..> BE_Controller : secures
+BE_Exception ..> BE_Controller : handles errors
+
+' ============================================================
+' FRONTEND <-> BACKEND (RESTful API)
+' ============================================================
+FE_API -[#FF5722,thickness=3]---> BE_Controller : <<RESTful API>>\n/api/*
+
+@enduml

@@ -1,0 +1,57 @@
+@startuml Create Order - Sequence Diagram
+
+actor "Waiter" as Waiter
+participant "WaiterOrderController" as Controller
+participant "OrderService" as Service
+participant "AreaTableRepository" as TableRepo
+participant "OrderRepository" as OrderRepo
+participant "OrderLineRepository" as LineRepo
+database "Database" as DB
+
+== Create Order Request ==
+Waiter -> Controller : POST /api/waiter/orders\n(CreateOrderRequest:\nareaTableId, items)
+activate Controller
+
+Controller -> Service : createOrder(request)
+activate Service
+
+Service -> TableRepo : findById(areaTableId)
+activate TableRepo
+TableRepo -> DB : SELECT area_table by id
+DB --> TableRepo : Optional<AreaTable>
+TableRepo --> Service : Optional<AreaTable>
+deactivate TableRepo
+
+alt table not found\n(or menu item / customization not found)
+    Service --> Controller : throw AppException
+    Controller --> Waiter : 4xx ApiResponse (error)
+else success
+    Service -> OrderRepo : find active by table\nor save new Order(EATING)
+    activate OrderRepo
+    OrderRepo -> DB : SELECT / INSERT order
+    DB --> OrderRepo : Order
+    OrderRepo --> Service : Order
+    deactivate OrderRepo
+
+    Service -> LineRepo : save(OrderLine, order items)
+    activate LineRepo
+    LineRepo -> DB : INSERT order_line, order_item
+    DB --> LineRepo : OrderLine
+    LineRepo --> Service : OrderLine
+    deactivate LineRepo
+
+    Service -> OrderRepo : save(order totals)
+    activate OrderRepo
+    OrderRepo -> DB : UPDATE order
+    DB --> OrderRepo : Order
+    OrderRepo --> Service : Order
+    deactivate OrderRepo
+
+    Service --> Controller : OrderDTO
+    deactivate Service
+
+    Controller --> Waiter : 200 ApiResponse<OrderDTO>
+    deactivate Controller
+end
+
+@enduml

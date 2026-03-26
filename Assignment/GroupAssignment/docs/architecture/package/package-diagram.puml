@@ -1,0 +1,444 @@
+@startuml Restaurant Management System - Package Diagram
+
+skinparam packageStyle rectangle
+skinparam linetype ortho
+skinparam shadowing false
+skinparam defaultFontSize 11
+skinparam packageFontSize 13
+skinparam packageFontStyle bold
+skinparam arrowColor #555555
+skinparam packageBorderColor #888888
+
+title Restaurant Management System — Package Architecture
+
+' ============================================================
+' FRONTEND (React + Vite + TypeScript)
+' ============================================================
+package "Frontend (React + Vite)" as FE #E8F5E9 {
+
+  package "Routes" as FE_Routes #C8E6C9 {
+    [AppRoutes]
+    [ProtectedRoute / StaffRoute / AdminRoute]
+  }
+
+  package "Pages" as FE_Pages #C8E6C9 {
+    package "Admin Pages" as FE_Pages_Admin {
+      [Statistics]
+      [PackageManagement]
+      [UserManagement]
+    }
+    package "Owner Pages" as FE_Pages_Owner {
+      [RestaurantSelection]
+      [RestaurantDashboard]
+      [CategoryManagement]
+      [MenuItemManagement]
+      [CustomizationManagement]
+      [AreaManagement]
+      [TableManagement]
+      [StaffManagement]
+      [BranchAreaSelection]
+    }
+    package "Manager Pages" as FE_Pages_Manager {
+      [ManagerDashboard]
+      [ManagerAreaManagement]
+      [ManagerTableManagement]
+      [ManagerStaff]
+      [ManagerBills]
+      [ManagerOverview]
+      [ManagerPromotions]
+      [BranchInfo]
+    }
+    package "Waiter Pages" as FE_Pages_Waiter {
+      [WaiterDashboard]
+      [WaiterTableView]
+      [WaiterOrderPage]
+      [WaiterHistory]
+    }
+    package "Receptionist Pages" as FE_Pages_Receptionist {
+      [ReceptionistDashboard]
+      [ReceptionistTableView]
+    }
+    package "Payment Pages" as FE_Pages_Payment {
+      [PackageSelectionPage]
+      [PaymentConfirm]
+      [PaymentCheckout]
+      [PaymentSuccess]
+      [PaymentFailed]
+      [PaymentCancel]
+    }
+    package "Auth Pages" as FE_Pages_Auth {
+      [Login]
+      [StaffLogin]
+      [Register]
+      [ForgotPassword]
+    }
+  }
+
+  package "Components" as FE_Components #C8E6C9 {
+    package "UI (shadcn/ui)" as FE_UI {
+      [Button, Card, Dialog, Table, ...]
+    }
+    package "Layout Components" as FE_Layouts {
+      [Navbar]
+      [AdminLayout]
+      [ManagerLayout / ManagerSidebar]
+      [WaiterLayout / WaiterSidebar]
+      [ReceptionistLayout / ReceptionistSidebar]
+    }
+    package "Feature Components" as FE_Feature {
+      [MenuItemFormDialog]
+      [CategoryFormDialog]
+      [CustomizationFormDialog]
+      [InvoiceView]
+      [RestaurantSubscriptionCard]
+    }
+  }
+
+  package "Hooks" as FE_Hooks #C8E6C9 {
+    package "Query Hooks (React Query)" as FE_QueryHooks {
+      [useAuthQueries]
+      [useRestaurantQueries]
+      [useBranchQueries]
+      [useAreaQueries]
+      [useTableQueries]
+      [useCategoryQueries]
+      [useMenuItemQueries]
+      [useCustomizationQueries]
+      [useStaffQueries]
+      [usePackageQueries]
+      [useSubscriptionQueries]
+      [useStatisticsQueries]
+      [useWaiterQueries]
+      [useAdminUserQueries]
+    }
+    package "Utility Hooks" as FE_UtilHooks {
+      [useRoleAccess]
+      [useFeatureLimits]
+      [useAuthInit]
+      [useGoogleOAuth]
+      [useToast / useMobile]
+    }
+  }
+
+  package "Stores (Zustand)" as FE_Stores #C8E6C9 {
+    [authStore]
+    [cartStore]
+  }
+
+  package "API Services (Axios)" as FE_API #C8E6C9 {
+    [axiosClient]
+    [authApi]
+    [userApi]
+    [restaurantApi]
+    [branchApi]
+    [areaApi]
+    [tableApi]
+    [categoryApi]
+    [menuItemApi]
+    [customizationApi]
+    [staffApi]
+    [packageApi]
+    [subscriptionApi]
+    [statisticsApi]
+    [waiterOrderApi]
+    [adminUserApi]
+  }
+
+  package "Types / DTOs" as FE_Types #C8E6C9 {
+    [api-response.dto]
+    [user.dto / staff.dto]
+    [restaurant.dto / branch.dto]
+    [area.dto / table.dto]
+    [category.dto / menu-item.dto]
+    [customization.dto / order.dto]
+    [package.dto / subscription.dto]
+    [request.dto]
+  }
+
+  package "Lib / Utils" as FE_Lib #C8E6C9 {
+    [utils (cn helper)]
+  }
+}
+
+' ============================================================
+' BACKEND (Java Spring Boot)
+' ============================================================
+package "Backend (Spring Boot)" as BE #E3F2FD {
+
+  package "Controller" as BE_Controller #BBDEFB {
+    package "Auth Controllers" as BE_Ctrl_Auth {
+      [AuthenticationController]
+    }
+    package "User Controllers" as BE_Ctrl_User {
+      [UserController]
+      [AdminUserController]
+      [StaffAccountController]
+    }
+    package "Restaurant Controllers" as BE_Ctrl_Restaurant {
+      [RestaurantController]
+      [BranchController]
+      [AreaController]
+      [AreaTableController]
+    }
+    package "Menu Controllers" as BE_Ctrl_Menu {
+      [CategoryController]
+      [MenuItemController]
+      [CustomizationController]
+      [BranchMenuItemController]
+    }
+    package "Order Controllers" as BE_Ctrl_Order {
+      [WaiterOrderController]
+      [WaiterBillController]
+      [WaiterMenuController]
+      [WaiterTableController]
+    }
+    package "Subscription Controllers" as BE_Ctrl_Sub {
+      [PackageController]
+      [FeatureController]
+      [SubscriptionController]
+      [SubscriptionPaymentController]
+      [RestaurantSubscriptionController]
+    }
+  }
+
+  package "Service" as BE_Service #BBDEFB {
+    package "Auth Services" as BE_Svc_Auth {
+      [AuthenticationService]
+      [JwtService]
+      [OTPService]
+      [MailService]
+      [TokenCleanupService]
+    }
+    package "User Services" as BE_Svc_User {
+      [UserService]
+      [AdminUserService]
+      [StaffAccountService]
+    }
+    package "Restaurant Services" as BE_Svc_Restaurant {
+      [RestaurantService]
+      [BranchService]
+      [AreaService]
+      [AreaTableService]
+    }
+    package "Menu Services" as BE_Svc_Menu {
+      [CategoryService]
+      [MenuItemService]
+      [CustomizationService]
+      [BranchMenuItemService]
+      [WaiterMenuService]
+    }
+    package "Order Services" as BE_Svc_Order {
+      [OrderService]
+      [BillService]
+    }
+    package "Subscription Services" as BE_Svc_Sub {
+      [PackageService]
+      [PackageFeatureService]
+      [FeatureService]
+      [FeatureLimitCheckerService]
+      [SubscriptionService]
+      [SubscriptionLookupService]
+      [SubscriptionPaymentService]
+      [RestaurantSubscriptionService]
+    }
+    package "Integration Services" as BE_Svc_Integr {
+      [CloudinaryService]
+      [MediaService]
+      [PayOSService]
+      [QrCodeService]
+      [AdminStatisticsService]
+    }
+  }
+
+  package "Repository (Spring Data JPA)" as BE_Repository #BBDEFB {
+    [UserRepository]
+    [RoleRepository]
+    [GoogleAccountRepository]
+    [StaffAccountRepository]
+    [RefreshTokenRepository]
+    [RestaurantRepository]
+    [BranchRepository]
+    [AreaRepository]
+    [AreaTableRepository]
+    [CategoryRepository]
+    [MenuItemRepository]
+    [CustomizationRepository]
+    [BranchMenuItemRepository]
+    [MediaRepository]
+    [OrderRepository]
+    [OrderLineRepository]
+    [OrderItemRepository]
+    [OrderItemCustomizationRepository]
+    [BillRepository]
+    [PackageRepository]
+    [PackageFeatureRepository]
+    [FeatureRepository]
+    [SubscriptionRepository]
+    [SubscriptionPaymentRepository]
+    [TargetTypeRepository]
+  }
+
+  package "Entity (JPA)" as BE_Entity #BBDEFB {
+    package "User Entities" {
+      [User / Role / GoogleAccount]
+      [StaffAccount]
+      [RefreshToken / InvalidJwtToken]
+    }
+    package "Restaurant Entities" {
+      [Restaurant / Branch]
+      [Area / AreaTable]
+    }
+    package "Menu Entities" {
+      [Category / MenuItem / Customization]
+      [BranchMenuItem / Media / TargetType]
+    }
+    package "Order Entities" {
+      [Order / OrderLine / OrderItem]
+      [OrderItemCustomization / Bill]
+    }
+    package "Subscription Entities" {
+      [Package / Feature / PackageFeature]
+      [Subscription / SubscriptionPayment]
+    }
+    package "Enums" {
+      [EntityStatus / TableStatus / OrderStatus]
+      [OrderLineStatus / RoleName / FeatureCode]
+      [PaymentMethod / SubscriptionStatus]
+    }
+  }
+
+  package "DTO" as BE_DTO #BBDEFB {
+    package "Request DTOs" as BE_DTO_Req {
+      [LoginRequest / SignupRequest]
+      [CreateOrderRequest / AddItemsToOrderRequest]
+      [CategoryCreateRequest / MenuItemCreateRequest]
+      [SubscriptionRequest / ConfirmPaymentRequest]
+      [CreateStaffAccountRequest]
+    }
+    package "Response DTOs" as BE_DTO_Res {
+      [ApiResponse<T>]
+      [AuthenticationResponse / StaffAuthResponse]
+      [PageResponse / UserResponse]
+      [SubscriptionResponse / SubscriptionPaymentResponse]
+    }
+    package "Data DTOs" as BE_DTO_Data {
+      [AreaDTO / AreaTableDTO]
+      [BranchDTO / CategoryDTO / MenuItemDTO]
+      [OrderDTO / OrderLineDTO / BillDTO]
+      [PackageStatsDTO / AdminStatisticsDTO]
+      [RestaurantDTO / StaffAccountDTO / UserDTO]
+    }
+  }
+
+  package "Mapper (MapStruct / Manual)" as BE_Mapper #BBDEFB {
+    [AreaMapper / AreaTableMapper]
+    [AuthenticationMapper / TokenMapper]
+    [BranchMapper / BranchMenuItemMapper]
+    [CategoryMapper / CustomizationMapper]
+    [MenuItemMapper / MediaMapper]
+    [RestaurantMapper / UserMapper]
+    [StaffAccountMapper / RoleMapper]
+    [SubscriptionMapper / SubscriptionPaymentMapper]
+    [FeatureMapper / FeatureValueMapper]
+  }
+
+  package "Config" as BE_Config #BBDEFB {
+    [SecurityConfig (CORS, Filter Chain)]
+    [JwtProperties]
+    [CloudinaryConfig]
+    [PayOSConfig]
+    [RedisConfig]
+    [SpaWebConfig]
+  }
+
+  package "Security" as BE_Security #BBDEFB {
+    [JwtAuthenticationFilter]
+    [OAuth2AuthenticationSuccessHandler]
+    [JwtAuthenticationEntryPoint]
+    [CustomAccessDeniedHandler]
+  }
+
+  package "Exception" as BE_Exception #BBDEFB {
+    [GlobalExceptionHandler]
+    [AppException / ErrorCode]
+  }
+
+  package "Validator" as BE_Validator #BBDEFB {
+    [PasswordValidator / @Password]
+  }
+
+  package "Utils" as BE_Utils #BBDEFB {
+    [SecurityUtil]
+  }
+}
+
+' ============================================================
+' FRONTEND INTERNAL DEPENDENCIES
+' ============================================================
+FE_Routes --> FE_Pages
+FE_Routes --> FE_Layouts
+FE_Routes --> FE_Stores
+
+FE_Pages --> FE_Components
+FE_Pages --> FE_Hooks
+FE_Pages --> FE_Stores
+FE_Pages --> FE_Types
+
+FE_Feature --> FE_UI
+FE_Layouts --> FE_UI
+FE_Layouts --> FE_Stores
+
+FE_QueryHooks --> FE_API
+FE_QueryHooks --> FE_Types
+FE_UtilHooks --> FE_Stores
+
+FE_API --> FE_Types
+[axiosClient] --> FE_Stores : reads auth token
+
+' ============================================================
+' BACKEND INTERNAL DEPENDENCIES
+' ============================================================
+BE_Controller --> BE_Service
+BE_Controller --> BE_DTO
+
+BE_Service --> BE_Repository
+BE_Service --> BE_Mapper
+BE_Service --> BE_Entity
+BE_Service --> BE_DTO
+BE_Service --> BE_Exception
+
+BE_Mapper --> BE_Entity
+BE_Mapper --> BE_DTO
+
+BE_Repository --> BE_Entity
+
+BE_Security --> BE_Service : JwtService, UserService
+BE_Security --> BE_Config
+
+BE_Config --> BE_Security
+
+BE_Controller --> BE_Utils : SecurityUtil
+BE_Service --> BE_Utils : SecurityUtil
+
+BE_Validator --> BE_Exception
+
+' ============================================================
+' FRONTEND ←→ BACKEND (HTTP / REST API)
+' ============================================================
+FE_API -[#FF5722,thickness=3]---> BE_Controller : <<HTTP REST API>>\naxios calls → /api/*
+
+note bottom of FE_API
+  axiosClient.ts provides:
+  - Base URL configuration
+  - JWT Bearer token injection
+  - Automatic token refresh on 401
+  - HttpOnly cookie support
+end note
+
+note bottom of BE_Controller
+  All endpoints under /api/*
+  Secured by JwtAuthenticationFilter
+  except public auth & payment endpoints
+end note
+
+@enduml

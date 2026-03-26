@@ -1,0 +1,49 @@
+@startuml Create Staff - Activity Diagram
+
+|Restaurant Owner|
+start
+:Select branch;
+
+:Select role\n(e.g. Waiter, Branch Manager);
+
+:Enter staff account\n(username, password);
+
+:Submit create staff request;
+
+|System|
+:Validate request;
+
+if (Username already taken?) then (yes)
+  :Return error;
+  stop
+else (no)
+endif
+
+:Verify role exists;
+
+if (Role valid?) then (no)
+  :Return error (role not found);
+  stop
+else (yes)
+endif
+
+:Verify branch exists;
+
+if (Branch valid?) then (no)
+  :Return error (branch not found);
+  stop
+else (yes)
+endif
+
+:Create staff account;
+
+:Assign role and branch;
+
+:Store staff account;
+
+:Return confirmation;
+
+|Restaurant Owner|
+stop
+
+@enduml

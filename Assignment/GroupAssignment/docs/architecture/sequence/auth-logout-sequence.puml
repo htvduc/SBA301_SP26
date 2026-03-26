@@ -1,0 +1,61 @@
+@startuml User Logout - Sequence Diagram
+
+actor Client
+participant "AuthenticationController" as Controller
+participant "AuthenticationService" as Service
+participant "JwtService" as JwtService
+participant "RefreshTokenRepository" as RefreshRepo
+database "Database" as DB
+
+== Logout Request ==
+Client -> Controller : POST /api/auth/logout\n(LogoutRequest optional: refreshToken)
+activate Controller
+
+Controller -> Controller : get refresh token\nfrom request body or cookie
+note right: if request.getRefreshToken() != null\n  use it\nelse\n  getTokenFromCookie(request, "refresh_token")
+
+alt refreshToken != null
+    Controller -> Service : logout(refreshToken)
+    activate Service
+
+    Service -> JwtService : deleteRefreshToken(refreshToken)
+    activate JwtService
+
+    JwtService -> JwtService : split(refreshToken, ":", 2)
+
+    alt invalid format (parts.length != 2)
+        JwtService --> Controller : throw JwtAuthenticationException\n(INVALID_JWT_FORMAT)
+        Controller --> Client : 4xx ApiResponse (error)
+    else valid format (tokenId:tokenString)
+        JwtService -> JwtService : tokenId = parts[0]
+
+        JwtService -> RefreshRepo : existsById(tokenId)
+        activate RefreshRepo
+        RefreshRepo -> DB : SELECT by id
+        DB --> RefreshRepo : boolean
+        RefreshRepo --> JwtService : exists
+        deactivate RefreshRepo
+
+        alt token exists in DB
+            JwtService -> RefreshRepo : deleteById(tokenId)
+            activate RefreshRepo
+            RefreshRepo -> DB : DELETE refresh_token
+            DB --> RefreshRepo : -
+            deactivate RefreshRepo
+        end
+
+        JwtService --> Service : (void)
+        deactivate JwtService
+        Service --> Controller : (void)
+        deactivate Service
+end
+
+Controller -> Controller : clearAuthCookies(request, response)
+note right: Set access_token, refresh_token\ncookies to empty, MaxAge=0\n(HttpOnly, SameSite=Lax)
+
+Controller -> Controller : ApiResponse.setCode(200)\nsetMessage("Logout successful")
+
+Controller --> Client : 200 ResponseEntity\nApiResponse<Void>
+deactivate Controller
+
+@enduml

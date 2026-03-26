@@ -1,0 +1,58 @@
+@startuml Assign Branch Manager - Sequence Diagram
+
+actor "Restaurant Owner" as Owner
+participant "StaffAccountController" as Controller
+participant "StaffAccountService" as Service
+participant "RoleRepository" as RoleRepo
+participant "BranchRepository" as BranchRepo
+participant "StaffAccountRepository" as StaffRepo
+participant "StaffAccountMapper" as Mapper
+database "Database" as DB
+
+== Assign Branch Manager Request ==
+Owner -> Controller : POST /api/staff\n(CreateStaffAccountRequest:\nusername, password, branchId, role)
+activate Controller
+
+Controller -> Service : createStaffAccount(request)
+activate Service
+
+Service -> RoleRepo : findByName(roleName)
+activate RoleRepo
+RoleRepo -> DB : SELECT role by name
+DB --> RoleRepo : Optional<Role>
+RoleRepo --> Service : Optional<Role>
+deactivate RoleRepo
+
+Service -> BranchRepo : findById(branchId)
+activate BranchRepo
+BranchRepo -> DB : SELECT branch by id
+DB --> BranchRepo : Optional<Branch>
+BranchRepo --> Service : Optional<Branch>
+deactivate BranchRepo
+
+alt cannot assign (username exists / role or branch missing)
+    Service --> Controller : throw AppException
+    Controller --> Owner : 4xx ApiResponse (error)
+else success
+    Service -> StaffRepo : save(staffAccount)
+    activate StaffRepo
+    StaffRepo -> DB : INSERT staff_account
+    DB --> StaffRepo : StaffAccount
+    StaffRepo --> Service : StaffAccount
+    deactivate StaffRepo
+
+    Service -> Mapper : toStaffAccountDTO(saved)
+    activate Mapper
+    Mapper --> Service : StaffAccountDTO
+    deactivate Mapper
+
+    Service --> Controller : StaffAccountDTO
+    deactivate Service
+
+    Controller -> Controller : ApiResponse.setResult(staffAccountDTO)
+
+    Controller --> Owner : 200 ApiResponse<StaffAccountDTO>
+    deactivate Controller
+end
+
+@enduml

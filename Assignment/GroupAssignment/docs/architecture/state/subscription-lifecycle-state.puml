@@ -1,0 +1,31 @@
+@startuml Subscription Lifecycle - State Diagram
+title Subscription Lifecycle (SubscriptionStatus)
+
+' Orthogonal (right-angle) transition lines
+skinparam linetype ortho
+
+skinparam state {
+  BackgroundColor White
+  BorderColor #333333
+}
+
+state "PENDING_PAYMENT" as PENDING_PAYMENT
+state "ACTIVE" as ACTIVE
+state "CANCELED" as CANCELED
+state "EXPIRED" as EXPIRED
+
+[*] --> PENDING_PAYMENT : createSubscription
+
+PENDING_PAYMENT --> ACTIVE : paymentSuccess\n/ activateSubscription
+
+PENDING_PAYMENT --> CANCELED : paymentCanceled [NEW, not activated]\npaymentExpired [scheduled job]
+
+ACTIVE --> CANCELED : cancelSubscription
+
+ACTIVE --> EXPIRED : endDatePassed [scheduled job]
+
+CANCELED --> [*]
+
+EXPIRED --> [*]
+
+@enduml

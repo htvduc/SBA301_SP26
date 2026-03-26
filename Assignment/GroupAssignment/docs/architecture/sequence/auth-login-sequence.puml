@@ -1,0 +1,89 @@
+@startuml User Login - Sequence Diagram
+
+actor Client
+participant "AuthenticationController" as Controller
+participant "AuthenticationService" as Service
+participant "UserRepository" as UserRepo
+participant "PasswordEncoder" as Encoder
+participant "JwtService" as JwtService
+participant "RefreshTokenRepository" as RefreshRepo
+participant "AuthenticationMapper" as Mapper
+database "Database" as DB
+
+== Login Request ==
+Client -> Controller : POST /api/auth/login\n(LoginRequest: email, password)
+activate Controller
+
+Controller -> Controller : @Valid LoginRequest\n(email, password validation)
+note right: Bean Validation\n@NotBlank, @Email
+
+Controller -> Controller : extractClientIp(request)\nextractUserAgent(request)
+
+Controller -> Service : login(request, clientIp, userAgent)
+activate Service
+
+Service -> UserRepo : findByEmail(request.getEmail())
+activate UserRepo
+UserRepo -> DB : SELECT user by email
+DB --> UserRepo : Optional<User>
+UserRepo --> Service : Optional<User>
+deactivate UserRepo
+
+alt user not found (empty)
+    Service --> Controller : throw AppException(INVALID_CREDENTIALS)
+    Controller --> Client : 4xx ApiResponse (error)
+else user found
+    Service -> Encoder : matches(rawPassword, user.getPassword())
+    activate Encoder
+    Encoder --> Service : boolean
+    deactivate Encoder
+
+    alt password does not match
+        Service --> Controller : throw AppException(INVALID_CREDENTIALS)
+        Controller --> Client : 4xx ApiResponse (error)
+    else password valid
+        Service -> Service : check user.getStatus() == ACTIVE
+
+        alt user status != ACTIVE (inactive/disabled)
+            Service --> Controller : throw AppException(USER_INACTIVE)
+            Controller --> Client : 4xx ApiResponse (error)
+        else user is ACTIVE
+            Service -> JwtService : generateAccessToken(user)
+            activate JwtService
+            note right of JwtService: JWT claims: sub, email, role, scope\nHS256, expiry from JwtProperties
+            JwtService --> Service : accessToken (String)
+            deactivate JwtService
+
+            Service -> JwtService : generateRefreshToken(user, clientIp, userAgent)
+            activate JwtService
+            JwtService -> JwtService : create RefreshToken entity\n(tokenHash, user, expiry)
+            JwtService -> RefreshRepo : save(refreshToken)
+            activate RefreshRepo
+            RefreshRepo -> DB : INSERT refresh_token
+            DB --> RefreshRepo : saved
+            RefreshRepo --> JwtService : -
+            deactivate RefreshRepo
+            JwtService --> Service : refreshToken (tokenId:tokenString)
+            deactivate JwtService
+
+            Service -> Mapper : toUserResponse(user)
+            activate Mapper
+            Mapper --> Service : UserResponse
+            deactivate Mapper
+
+            Service -> Service : new AuthenticationResponse\n(accessToken, refreshToken, userResponse)
+            Service --> Controller : AuthenticationResponse
+            deactivate Service
+
+            Controller -> Controller : setAuthCookies(request, response,\naccessToken, refreshToken)
+            note right: HttpOnly cookies:\naccess_token (1h), refresh_token (7d)
+
+            Controller -> Controller : ApiResponse.setCode(200)\nsetMessage("Login successful")\nsetResult(authResponse)
+
+            Controller --> Client : 200 ResponseEntity\nApiResponse<AuthenticationResponse>
+            deactivate Controller
+        end
+    end
+end
+
+@enduml
